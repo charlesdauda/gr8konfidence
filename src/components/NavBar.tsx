@@ -15,10 +15,46 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Scroll-spy: highlight whichever section is currently passing through a
+  // thin band near the top of the viewport, so `active` tracks scroll
+  // position and not just clicks. Drives both the desktop and mobile menus.
+  useEffect(() => {
+    const sections = NAV_LINKS
+      .map((link) => document.getElementById(link.toLowerCase()))
+      .filter((el): el is HTMLElement => el !== null);
+
+    if (sections.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const match = NAV_LINKS.find(
+              (link) => link.toLowerCase() === entry.target.id
+            );
+            if (match) setActive(match);
+          }
+        });
+      },
+      {
+        // Shrinks the detection area to a thin horizontal band roughly
+        // 45%-50% down the viewport — whichever section crosses that band
+        // becomes active.
+        rootMargin: "-45% 0px -50% 0px",
+        threshold: 0,
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
-        scrolled ? "bg-black/80 backdrop-blur-xl border-b border-white/5 py-3" : "py-5"
+        scrolled || open
+          ? "bg-black/80 backdrop-blur-xl border-b border-white/5 py-3"
+          : "py-5"
       }`}
     >
       <nav className="max-w-7xl mx-auto px-6 lg:px-10 flex items-center justify-between">
@@ -73,17 +109,20 @@ export default function Navbar() {
         }`}
       >
         {NAV_LINKS.map((link) => (
-          <a
-            key={link}
-            href={`#${link.toLowerCase()}`}
-            onClick={() => {
-              setActive(link);
-              setOpen(false);
-            }}
-            className="block py-3 text-sm font-medium text-white/60 border-b border-white/5"
-          >
-            {link}
-          </a>
+          <div key={link} className="border-b border-white/5">
+            <a
+              href={`#${link.toLowerCase()}`}
+              onClick={() => {
+                setActive(link);
+                setOpen(false);
+              }}
+              className={`nav-link inline-block py-3 text-sm font-medium ${
+                active === link ? "text-white active" : "text-white/60 hover:text-white"
+              }`}
+            >
+              {link}
+            </a>
+          </div>
         ))}
       </div>
     </header>
