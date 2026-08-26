@@ -85,7 +85,8 @@ function ProjectCard({ item, index, onOpen }: ProjectCardProps) {
         <img
           src={item.image}
           alt={item.title}
-          loading="lazy"
+          loading="eager"
+          decoding="async"
           className="absolute inset-0 w-full h-full object-cover object-top scale-105 group-hover:object-bottom group-hover:scale-110"
           style={{ transition: "transform 700ms ease-out, object-position 3500ms ease-in-out" }}
         />
