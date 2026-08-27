@@ -31,7 +31,7 @@ export default function Hero() {
           </p>
 
           <h1 className="animate-fade-up delay-2 font-display font-bold text-5xl sm:text-6xl xl:text-7xl leading-[1.08] tracking-tight text-white mb-6">
-            Graphic Design
+            Creative Designs
             <br />
             that <span className="gradient-text">Inspires.</span>
           </h1>
