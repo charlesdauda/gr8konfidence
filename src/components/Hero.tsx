@@ -1,4 +1,4 @@
-import { ArrowUpRight, Play } from "lucide-react";
+import { ArrowUpRight, MessageCircle } from "lucide-react";
 import { FaInstagram, FaTwitter, FaLinkedin } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa6";
 import HeroImge from "../assets/images/heroimage.png";
@@ -18,25 +18,25 @@ export default function Hero() {
               <a
                 key={i}
                 href="#"
-                className="w-10 h-10 grid place-items-center rounded-full border border-white/10 text-white/50 hover:text-white hover:border-emerald-500 hover:-translate-y-1 transition-all duration-300"
+                className="w-10 h-10 grid place-items-center rounded-full border border-brand-ink/10 text-brand-ink/50 hover:text-brand-green hover:border-brand-green hover:-translate-y-1 transition-all duration-300"
               >
                 <Icon size={15} />
               </a>
             ))}
-            <span className="w-px h-16 bg-white/10" />
+            <span className="w-px h-16 bg-brand-ink/10" />
           </div>
 
-          <p className="animate-fade-up delay-1 text-sm font-medium text-white/60 mb-5">
+          <p className="animate-fade-up delay-1 text-sm font-medium text-brand-ink/60 mb-5">
             Hello, I&apos;m <span className="text-brand-green font-bold">Gr8Konfidence</span>
           </p>
 
-          <h1 className="animate-fade-up delay-2 font-display font-bold text-5xl sm:text-6xl xl:text-7xl leading-[1.08] tracking-tight text-white mb-6">
-            Creative Designs
+          <h1 className="animate-fade-up delay-2 font-display font-bold text-5xl sm:text-6xl xl:text-7xl leading-[1.08] tracking-tight text-brand-ink mb-6">
+            I create designs
             <br />
             that <span className="gradient-text">Inspires.</span>
           </h1>
 
-          <p className="animate-fade-up delay-3 text-white/55 text-base sm:text-lg max-w-md mb-10 leading-relaxed">
+          <p className="animate-fade-up delay-3 text-brand-ink/55 text-base sm:text-lg max-w-md mb-10 leading-relaxed">
             I craft visually compelling designs that help brands communicate,
             stand out and grow one pixel at a time.
           </p>
@@ -44,25 +44,25 @@ export default function Hero() {
           <div className="animate-fade-up delay-4 flex flex-wrap items-center gap-8">
             <a
               href="#work"
-              className="group inline-flex items-center gap-2 pl-6 pr-2 py-2.5 rounded-full font-semibold text-sm text-black btn-gradient animate-pulse-glow"
+              className="group inline-flex items-center gap-2 pl-6 pr-2 py-2.5 rounded-full font-semibold text-sm text-white btn-gradient animate-pulse-glow"
             >
               View My Work
-              <span className="grid place-items-center w-9 h-9 rounded-full bg-black/15 group-hover:rotate-45 transition-transform duration-300">
+              <span className="grid place-items-center w-9 h-9 rounded-full bg-white/15 group-hover:rotate-45 transition-transform duration-300">
                 <ArrowUpRight size={16} strokeWidth={2.5} />
               </span>
             </a>
 
-            <button className="group flex items-center gap-3 text-sm font-medium text-white/80">
-              <span className="grid place-items-center w-12 h-12 rounded-full border border-white/15 group-hover:border-emerald-500 group-hover:bg-emerald-500/10 transition-all duration-300">
-                <Play size={14} className="ml-0.5" fill="currentColor" />
+            <a href="#" className="group flex items-center gap-3 text-sm font-medium text-brand-ink/80">
+              <span className="grid place-items-center w-12 h-12 rounded-full border border-brand-ink/15 group-hover:border-brand-green group-hover:bg-brand-green/10 transition-all duration-300">
+                <MessageCircle size={14} className="ml-0.5" fill="currentColor" />
               </span>
-              Watch Showreel
-            </button>
+              Let's talk
+            </a>
           </div>
 
-          <div className="animate-fade-in delay-5 hidden sm:flex items-center gap-3 mt-20 text-white/35">
-            <span className="w-6 h-9 rounded-full border border-white/15 flex justify-center pt-1.5">
-              <span className="w-1 h-1.5 rounded-full bg-white/50 animate-bounce-dot" />
+          <div className="animate-fade-in delay-5 hidden sm:flex items-center gap-3 mt-20 text-brand-ink/35">
+            <span className="w-6 h-9 rounded-full border border-brand-ink/15 flex justify-center pt-1.5">
+              <span className="w-1 h-1.5 rounded-full bg-brand-ink/50 animate-bounce-dot" />
             </span>
             <span className="text-xs tracking-widest uppercase">Scroll Down</span>
           </div>
@@ -77,7 +77,7 @@ export default function Hero() {
               className="relative rounded-3xl p-px"
               style={{
                 backgroundImage:
-                  "linear-gradient(135deg, rgba(16,185,129,0.6), rgba(59,130,246,0.6))",
+                  "linear-gradient(135deg, rgba(22,163,74,0.6), rgba(29,78,216,0.6))",
               }}
             >
               <div className="relative aspect-4/5 rounded-[calc(1.5rem-1px)] overflow-hidden portrait-frame">
@@ -87,7 +87,7 @@ export default function Hero() {
                   className="absolute inset-0 h-full w-full object-cover"
                 />
 
-                <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-black/70 to-transparent pointer-events-none" />
+                <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-white/70 to-transparent pointer-events-none" />
               </div>
             </div>
 
@@ -95,8 +95,8 @@ export default function Hero() {
               gk.
             </span>
 
-            <span className="absolute -bottom-6 -left-6 w-16 h-16 rounded-full border border-white/15 grid place-items-center bg-black animate-spin-slow">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
+            <span className="absolute -bottom-6 -left-6 w-16 h-16 rounded-full border border-brand-ink/15 grid place-items-center bg-white animate-spin-slow">
+              <span className="w-2 h-2 rounded-full bg-brand-green" />
             </span>
           </div>
         </div>

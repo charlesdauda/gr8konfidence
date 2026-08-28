@@ -15,9 +15,6 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Scroll-spy: highlight whichever section is currently passing through a
-  // thin band near the top of the viewport, so `active` tracks scroll
-  // position and not just clicks. Drives both the desktop and mobile menus.
   useEffect(() => {
     const sections = NAV_LINKS
       .map((link) => document.getElementById(link.toLowerCase()))
@@ -37,9 +34,6 @@ export default function Navbar() {
         });
       },
       {
-        // Shrinks the detection area to a thin horizontal band roughly
-        // 45%-50% down the viewport — whichever section crosses that band
-        // becomes active.
         rootMargin: "-45% 0px -50% 0px",
         threshold: 0,
       }
@@ -53,17 +47,17 @@ export default function Navbar() {
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
         scrolled || open
-          ? "bg-black/80 backdrop-blur-xl border-b border-white/5 py-3"
+          ? "bg-white/90 backdrop-blur-xl border-b border-brand-ink/5 py-3"
           : "py-5"
       }`}
     >
       <nav className="max-w-7xl mx-auto px-6 lg:px-10 flex items-center justify-between">
         <a href="#home" className="flex items-center">
-        <img 
+          <img
             src={LogoImg}
-            alt="Gr8Konfidence" 
-            className="h-10 sm:h-12 w-auto object-contain" 
-        />
+            alt="Gr8Konfidence"
+            className="h-10 sm:h-12 w-auto object-contain"
+          />
         </a>
 
         <ul className="hidden lg:flex items-center gap-10 list-none">
@@ -73,7 +67,9 @@ export default function Navbar() {
                 href={`#${link.toLowerCase()}`}
                 onClick={() => setActive(link)}
                 className={`nav-link text-sm font-medium ${
-                  active === link ? "text-white active" : "text-white/55 hover:text-white"
+                  active === link
+                    ? "text-brand-ink active"
+                    : "text-brand-ink/55 hover:text-brand-ink"
                 }`}
               >
                 {link}
@@ -85,17 +81,17 @@ export default function Navbar() {
         <div className="flex items-center gap-4">
           <a
             href="#contact"
-            className="hidden sm:inline-flex items-center gap-2 pl-6 pr-2 py-2 rounded-full text-sm font-semibold text-black btn-gradient"
+            className="hidden sm:inline-flex items-center gap-2 pl-6 pr-2 py-2 rounded-full text-sm font-semibold text-white btn-gradient"
           >
-            Let's Work Together
-            <span className="grid place-items-center w-8 h-8 rounded-full bg-black/15">
+            CV
+            <span className="grid place-items-center w-8 h-8 rounded-full bg-white/15">
               <ArrowUpRight size={15} strokeWidth={2.5} />
             </span>
           </a>
 
           <button
             onClick={() => setOpen(!open)}
-            className="lg:hidden grid place-items-center w-10 h-10 rounded-full border border-white/10 text-white"
+            className="lg:hidden grid place-items-center w-10 h-10 rounded-full border border-brand-ink/10 text-brand-ink"
             aria-label="Toggle menu"
           >
             {open ? <X size={18} /> : <Menu size={18} />}
@@ -109,7 +105,7 @@ export default function Navbar() {
         }`}
       >
         {NAV_LINKS.map((link) => (
-          <div key={link} className="border-b border-white/5">
+          <div key={link} className="border-b border-brand-ink/5">
             <a
               href={`#${link.toLowerCase()}`}
               onClick={() => {
@@ -117,7 +113,9 @@ export default function Navbar() {
                 setOpen(false);
               }}
               className={`nav-link inline-block py-3 text-sm font-medium ${
-                active === link ? "text-white active" : "text-white/60 hover:text-white"
+                active === link
+                  ? "text-brand-ink active"
+                  : "text-brand-ink/60 hover:text-brand-ink"
               }`}
             >
               {link}

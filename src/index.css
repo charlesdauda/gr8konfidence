@@ -10,11 +10,22 @@
 @import '@fontsource/playfair-display/400-italic.css';
 
 @tailwind utilities;
+
+/*
+  Brand tokens live in @theme (Tailwind v4). Anything defined here as
+  --color-brand-* is automatically turned into real utility classes:
+  bg-brand-green, text-brand-blue, border-brand-blue-light, etc.
+  No extra config needed — just use the class names directly in your JSX.
+*/
+@theme {
+  --color-brand-green: #16a34a;
+  --color-brand-green-light: #4ade80;
+  --color-brand-blue: #1d4ed8;
+  --color-brand-blue-light: #3b82f6;
+  --color-brand-ink: #0b0f19;
+}
+
 :root {
-  --color-green: #16a34a;
-  --color-green-light: #4ade80;
-  --color-navy: #16233f;
-  --color-navy-light: #3559a6;
   --ease-premium: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -23,7 +34,8 @@ html {
 }
 
 body {
-  background-color: #000;
+  background-color: #ffffff;
+  color: var(--color-brand-ink);
 }
 
 .gk-body {
@@ -46,29 +58,21 @@ body {
   text-decoration: none;
 }
 
-.text-brand-green {
-  color: var(--color-green);
-}
-
-.text-brand-navy {
-  color: var(--color-navy-light);
-}
-
 .gradient-text {
-  background: linear-gradient(135deg, var(--color-green-light), var(--color-navy-light));
+  background: linear-gradient(135deg, var(--color-brand-green), var(--color-brand-blue));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .btn-gradient {
-  background: linear-gradient(135deg, var(--color-green), var(--color-navy-light));
+  background: linear-gradient(135deg, var(--color-brand-green), var(--color-brand-blue));
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .btn-gradient:hover {
   transform: translateY(-3px);
-  box-shadow: 0 14px 30px -10px rgba(22, 163, 74, 0.5);
+  box-shadow: 0 14px 30px -10px rgba(22, 163, 74, 0.35), 0 10px 26px -12px rgba(29, 78, 216, 0.35);
 }
 
 .nav-link {
@@ -84,7 +88,7 @@ body {
   bottom: -6px;
   width: 100%;
   height: 2px;
-  background: linear-gradient(90deg, var(--color-green), var(--color-navy-light));
+  background: linear-gradient(90deg, var(--color-brand-green), var(--color-brand-blue));
   transform: scaleX(0);
   transform-origin: left;
   transition: transform 0.35s var(--ease-premium);
@@ -96,20 +100,20 @@ body {
 }
 
 .hero-noise {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(11, 15, 25, 0.06) 1px, transparent 1px);
   background-size: 26px 26px;
   mask-image: radial-gradient(circle at 25% 20%, black, transparent 65%);
   -webkit-mask-image: radial-gradient(circle at 25% 20%, black, transparent 65%);
 }
 
 .hero-glow {
-  background: radial-gradient(circle, var(--color-green) 0%, transparent 70%);
+  background: radial-gradient(circle, var(--color-brand-green) 0%, var(--color-brand-blue) 55%, transparent 72%);
   filter: blur(130px);
-  opacity: 0.22;
+  opacity: 0.16;
 }
 
 .dot-grid {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.18) 1.5px, transparent 1.5px);
+  background-image: radial-gradient(rgba(11, 15, 25, 0.14) 1.5px, transparent 1.5px);
   background-size: 18px 18px;
 }
 
@@ -122,26 +126,26 @@ body {
 }
 
 .filter-pill.active {
-  background: var(--color-green);
-  color: #06110a;
-  box-shadow: 0 10px 24px -10px rgba(22, 163, 74, 0.55);
+  background: var(--color-brand-green);
+  color: #ffffff;
+  box-shadow: 0 10px 24px -10px rgba(22, 163, 74, 0.45);
 }
 
 .blob-shape {
-  background: linear-gradient(135deg, var(--color-navy), var(--color-green));
+  background: linear-gradient(135deg, var(--color-brand-blue), var(--color-brand-green));
   border-radius: 44% 56% 62% 38% / 48% 44% 56% 52%;
   filter: blur(4px);
-  opacity: 0.55;
+  opacity: 0.5;
 }
 
 .portrait-frame {
-  background: linear-gradient(160deg, #111318, #05060a);
+  background: linear-gradient(160deg, #101a2e, #05070d);
 }
 
 .portrait-glow {
-  background: linear-gradient(135deg, var(--color-green), var(--color-navy-light));
+  background: linear-gradient(135deg, var(--color-brand-green), var(--color-brand-blue));
   filter: blur(45px);
-  opacity: 0.6;
+  opacity: 0.5;
 }
 
 @keyframes fadeInUp {
