@@ -26,7 +26,6 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("sending");
-
     try {
       await emailjs.send(
         EMAILJS_SERVICE_ID,
@@ -34,7 +33,6 @@ export default function Contact() {
         { name: form.name, email: form.email, message: form.message },
         EMAILJS_PUBLIC_KEY
       );
-
       setStatus("success");
       setForm({ name: "", email: "", message: "" });
     } catch (err) {
@@ -44,7 +42,7 @@ export default function Contact() {
   };
 
   return (
-    <section className="relative w-full overflow-hidden bg-white px-6 py-24 text-brand-ink" id="contact">
+    <section className="relative w-full overflow-hidden bg-black px-6 py-24 text-white" id="contact">
       <div className="relative mx-auto grid max-w-6xl gap-12 md:grid-cols-2 md:gap-16">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -52,33 +50,28 @@ export default function Contact() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
         >
-          <p className="mb-3 text-sm font-bold tracking-[0.15em] text-brand-green">
+          <p className="mb-3 text-sm font-bold tracking-[0.15em] text-[#16a34a]">
             GET IN TOUCH
           </p>
-
           <h2 className="text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl">
             Let&apos;s Create Something{" "}
             <span
               className="bg-clip-text text-transparent"
-              style={{
-                backgroundImage:
-                  "linear-gradient(90deg, var(--color-brand-green), var(--color-brand-blue))",
-              }}
+              style={{ backgroundImage: "linear-gradient(90deg, #48ce85, #3768a2)" }}
             >
               Great.
             </span>
           </h2>
-
-          <p className="mt-4 max-w-md text-balance text-brand-ink/55">
+          <p className="mt-4 max-w-md text-balance text-[#8b8b96]">
             Have a project in mind? Tell me about it and I&apos;ll get back to you
             within a day or two.
           </p>
 
           <a
             href={`mailto:${CONTACT_EMAIL}`}
-            className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-brand-ink/80 transition-colors hover:text-brand-ink"
+            className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-white/80 transition-colors hover:text-white"
           >
-            <Mail size={16} className="text-brand-green-light" />
+            <Mail size={16} className="text-[#48ce85]" />
             {CONTACT_EMAIL}
           </a>
         </motion.div>
@@ -89,7 +82,7 @@ export default function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="relative overflow-hidden rounded-2xl border border-brand-ink/8 bg-white p-6 shadow-sm sm:p-8"
+          className="relative overflow-hidden rounded-2xl border border-white/8 bg-[#0a0a0a] p-6 sm:p-8"
         >
           <div
             aria-hidden
@@ -100,11 +93,10 @@ export default function Contact() {
             <div>
               <label
                 htmlFor="name"
-                className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-brand-ink/55"
+                className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-[#8b8b96]"
               >
                 Name
               </label>
-
               <input
                 id="name"
                 name="name"
@@ -113,18 +105,17 @@ export default function Contact() {
                 value={form.name}
                 onChange={handleChange}
                 placeholder="Your name"
-                className="w-full rounded-xl border border-brand-ink/8 bg-brand-ink/3 px-4 py-3 text-sm text-brand-ink outline-none transition-colors placeholder:text-brand-ink/35 focus:border-brand-green"
+                className="w-full rounded-xl border border-white/8 bg-white/3 px-4 py-3 text-sm text-white outline-none transition-colors placeholder:text-[#55555f] focus:border-[#48ce85]"
               />
             </div>
 
             <div>
               <label
                 htmlFor="email"
-                className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-brand-ink/55"
+                className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-[#8b8b96]"
               >
                 Email
               </label>
-
               <input
                 id="email"
                 name="email"
@@ -133,18 +124,17 @@ export default function Contact() {
                 value={form.email}
                 onChange={handleChange}
                 placeholder="you@example.com"
-                className="w-full rounded-xl border border-brand-ink/8 bg-brand-ink/3 px-4 py-3 text-sm text-brand-ink outline-none transition-colors placeholder:text-brand-ink/35 focus:border-brand-green"
+                className="w-full rounded-xl border border-white/8 bg-white/3 px-4 py-3 text-sm text-white outline-none transition-colors placeholder:text-[#55555f] focus:border-[#48ce85]"
               />
             </div>
 
             <div>
               <label
                 htmlFor="message"
-                className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-brand-ink/55"
+                className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-[#8b8b96]"
               >
                 Message
               </label>
-
               <textarea
                 id="message"
                 name="message"
@@ -153,22 +143,19 @@ export default function Contact() {
                 value={form.message}
                 onChange={handleChange}
                 placeholder="Tell me about your project..."
-                className="w-full resize-none rounded-xl border border-brand-ink/8 bg-brand-ink/3 px-4 py-3 text-sm text-brand-ink outline-none transition-colors placeholder:text-brand-ink/35 focus:border-brand-green"
+                className="w-full resize-none rounded-xl border border-white/8 bg-white/8 px-4 py-3 text-sm text-white outline-none transition-colors placeholder:text-[#55555f] focus:border-[#48ce85]"
               />
             </div>
 
             <button
               type="submit"
               disabled={status === "sending"}
-              className="flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-bold text-white transition-opacity disabled:cursor-not-allowed disabled:opacity-60"
-              style={{
-                backgroundImage:
-                  "linear-gradient(90deg, var(--color-brand-green), var(--color-brand-blue))",
-              }}
+              className="flex w-full items-center justify-center gap-2 rounded-xl px-6 py-3.5 text-sm font-bold text-black transition-opacity disabled:cursor-not-allowed disabled:opacity-60"
+              style={{ backgroundImage: "linear-gradient(90deg, #48ce85, #3768a2)" }}
             >
               {status === "sending" ? (
                 <>
-                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-black/30 border-t-black" />
                   Sending...
                 </>
               ) : (
@@ -180,14 +167,13 @@ export default function Contact() {
             </button>
 
             {status === "success" && (
-              <p className="flex items-center gap-2 text-sm font-medium text-brand-green">
+              <p className="flex items-center gap-2 text-sm font-medium text-[#48ce85]">
                 <CheckCircle2 size={16} />
                 Message sent — I&apos;ll get back to you soon.
               </p>
             )}
-
             {status === "error" && (
-              <p className="flex items-center gap-2 text-sm font-medium text-red-500">
+              <p className="flex items-center gap-2 text-sm font-medium text-[#f87171]">
                 <AlertCircle size={16} />
                 Something went wrong. Try again, or email me directly.
               </p>
@@ -198,4 +184,3 @@ export default function Contact() {
     </section>
   );
 }
-

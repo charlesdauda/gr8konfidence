@@ -55,7 +55,7 @@ interface SwiperCSSVars extends CSSProperties {
 const swiperPaginationVars: SwiperCSSVars = {
   position: "static",
   "--swiper-pagination-color": "#16a34a",
-  "--swiper-pagination-bullet-inactive-color": "rgba(11,15,25,0.35)",
+  "--swiper-pagination-bullet-inactive-color": "rgba(255,255,255,0.35)",
 };
 
 interface ProjectCardProps {
@@ -67,7 +67,7 @@ interface ProjectCardProps {
 function ProjectCard({ item, index, onOpen }: ProjectCardProps) {
   return (
     <div
-      className={`animate-fade-up ${DELAYS[index % DELAYS.length]} group relative rounded-3xl overflow-hidden border border-brand-ink/10 hover:border-brand-green/40 transition-colors duration-500`}
+      className={`animate-fade-up ${DELAYS[index % DELAYS.length]} group relative rounded-3xl overflow-hidden border border-white/10 hover:border-emerald-500/40 transition-colors duration-500`}
     >
       <div
         className="relative aspect-card overflow-hidden cursor-pointer"
@@ -91,23 +91,20 @@ function ProjectCard({ item, index, onOpen }: ProjectCardProps) {
           style={{ transition: "transform 700ms ease-out, object-position 3500ms ease-in-out" }}
         />
 
-        <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-white/80 backdrop-blur border border-brand-ink/10 text-xs font-medium text-brand-ink/80">
+        <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/50 backdrop-blur border border-white/10 text-xs font-medium text-white/80">
           {item.type}
         </span>
 
-        <span className="absolute top-4 right-4 grid place-items-center w-10 h-10 rounded-full bg-white/80 backdrop-blur border border-brand-ink/10 text-brand-ink opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+        <span className="absolute top-4 right-4 grid place-items-center w-10 h-10 rounded-full bg-white/10 backdrop-blur border border-white/10 text-white opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
           <ArrowUpRight size={16} />
         </span>
 
-        <div className="absolute inset-0 bg-linear-to-t from-white via-white/10 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black via-black/10 to-transparent" />
       </div>
 
       <div className="p-5">
-        <h3 className="font-display font-semibold text-lg text-brand-ink mb-1">
-          {item.title}
-        </h3>
-
-        <div className="flex items-center justify-between text-sm text-brand-ink/45">
+        <h3 className="font-display font-semibold text-lg text-white mb-1">{item.title}</h3>
+        <div className="flex items-center justify-between text-sm text-white/45">
           <span>{item.type}</span>
           <span>{item.year}</span>
         </div>
@@ -127,15 +124,12 @@ function Lightbox({ projects, initialIndex, onClose }: LightboxProps) {
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
-
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
       if (e.key === "ArrowRight") swiperInstance.current?.slideNext();
       if (e.key === "ArrowLeft") swiperInstance.current?.slidePrev();
     };
-
     window.addEventListener("keydown", onKeyDown);
-
     return () => {
       document.body.style.overflow = "";
       window.removeEventListener("keydown", onKeyDown);
@@ -144,13 +138,13 @@ function Lightbox({ projects, initialIndex, onClose }: LightboxProps) {
 
   return (
     <div
-      className="fixed inset-0 z-100 bg-white/95 backdrop-blur-md flex items-center justify-center animate-fade-in"
+      className="fixed inset-0 z-100 bg-black/90 backdrop-blur-md flex items-center justify-center animate-fade-in"
       onClick={onClose}
     >
       <button
         onClick={onClose}
         aria-label="Close"
-        className="absolute top-5 right-5 z-10 grid place-items-center w-11 h-11 rounded-full bg-brand-ink/5 hover:bg-brand-ink/10 border border-brand-ink/15 text-brand-ink transition-colors duration-300"
+        className="absolute top-5 right-5 z-10 grid place-items-center w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white transition-colors duration-300"
       >
         <X size={20} />
       </button>
@@ -161,7 +155,7 @@ function Lightbox({ projects, initialIndex, onClose }: LightboxProps) {
           swiperInstance.current?.slidePrev();
         }}
         aria-label="Previous image"
-        className="hidden sm:grid absolute left-5 top-1/2 -translate-y-1/2 z-10 place-items-center w-11 h-11 rounded-full bg-brand-ink/5 hover:bg-brand-ink/10 border border-brand-ink/15 text-brand-ink transition-colors duration-300"
+        className="hidden sm:grid absolute left-5 top-1/2 -translate-y-1/2 z-10 place-items-center w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white transition-colors duration-300"
       >
         <ChevronLeft size={20} />
       </button>
@@ -172,7 +166,7 @@ function Lightbox({ projects, initialIndex, onClose }: LightboxProps) {
           swiperInstance.current?.slideNext();
         }}
         aria-label="Next image"
-        className="hidden sm:grid absolute right-5 top-1/2 -translate-y-1/2 z-10 place-items-center w-11 h-11 rounded-full bg-brand-ink/5 hover:bg-brand-ink/10 border border-brand-ink/15 text-brand-ink transition-colors duration-300"
+        className="hidden sm:grid absolute right-5 top-1/2 -translate-y-1/2 z-10 place-items-center w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white transition-colors duration-300"
       >
         <ChevronRight size={20} />
       </button>
@@ -194,15 +188,11 @@ function Lightbox({ projects, initialIndex, onClose }: LightboxProps) {
                 <img
                   src={item.image}
                   alt={item.title}
-                  className="max-h-[70vh] max-w-full w-auto h-auto object-contain rounded-2xl border border-brand-ink/10"
+                  className="max-h-[70vh] max-w-full w-auto h-auto object-contain rounded-2xl border border-white/10"
                 />
-
                 <div className="text-center">
-                  <h3 className="font-display font-semibold text-lg text-brand-ink">
-                    {item.title}
-                  </h3>
-
-                  <p className="text-sm text-brand-ink/50">
+                  <h3 className="font-display font-semibold text-lg text-white">{item.title}</h3>
+                  <p className="text-sm text-white/50">
                     {item.type} · {item.year}
                   </p>
                 </div>
@@ -267,8 +257,7 @@ export default function Work() {
             <p className="text-xs font-bold tracking-widest uppercase text-brand-green mb-3">
               Selected Works
             </p>
-
-            <h2 className="font-display font-bold text-4xl sm:text-5xl text-brand-ink leading-tight">
+            <h2 className="font-display font-bold text-4xl sm:text-5xl text-white leading-tight">
               Creative Work
               <br className="hidden sm:block" /> That{" "}
               <span className="gradient-text">Speaks.</span>
@@ -281,9 +270,7 @@ export default function Work() {
                 key={cat}
                 onClick={() => setActive(cat)}
                 className={`filter-pill px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                  active === cat
-                    ? "active"
-                    : "text-brand-ink/55 hover:text-brand-ink hover:bg-brand-ink/5"
+                  active === cat ? "active" : "text-white/55 hover:text-white hover:bg-white/5"
                 }`}
               >
                 {cat}
@@ -295,12 +282,7 @@ export default function Work() {
         {/* grid — tablet & desktop, unchanged */}
         <div key={active} className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {filtered.map((item, i) => (
-            <ProjectCard
-              key={item.id}
-              item={item}
-              index={i}
-              onOpen={() => setLightboxIndex(i)}
-            />
+            <ProjectCard key={item.id} item={item} index={i} onOpen={() => setLightboxIndex(i)} />
           ))}
         </div>
 
@@ -325,11 +307,7 @@ export default function Work() {
           >
             {filtered.map((item, i) => (
               <SwiperSlide key={item.id}>
-                <ProjectCard
-                  item={item}
-                  index={i}
-                  onOpen={() => setLightboxIndex(i)}
-                />
+                <ProjectCard item={item} index={i} onOpen={() => setLightboxIndex(i)} />
               </SwiperSlide>
             ))}
           </Swiper>
@@ -344,7 +322,7 @@ export default function Work() {
 
       {showHint && (
         <div className="fixed bottom-6 inset-x-0 z-60 flex justify-center px-6 animate-fade-in pointer-events-none">
-          <div className="flex items-center gap-2 px-5 py-3 rounded-full bg-white/95 backdrop-blur-xl border border-brand-ink/10 text-sm text-brand-ink/85 shadow-lg">
+          <div className="flex items-center gap-2 px-5 py-3 rounded-full bg-black/80 backdrop-blur-xl border border-white/10 text-sm text-white/85 shadow-lg">
             <MousePointerClick size={16} className="text-brand-green" />
             Tap a card to see the full image
           </div>
