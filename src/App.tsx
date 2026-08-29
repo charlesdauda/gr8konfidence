@@ -4,6 +4,7 @@ import Footer from "./components/Footer";
 import Hero from "./components/Hero";
 import Navbar from "./components/NavBar";
 import Services from "./components/Services";
+import Streamers from "./components/Streamers";
 import Work from "./components/Work";
 
 const App = ()=> {
@@ -13,6 +14,7 @@ const App = ()=> {
     <Hero />
     <About />
     <Work />
+    <Streamers />
     <Services />
     <Contact />
     <Footer />

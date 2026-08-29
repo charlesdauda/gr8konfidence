@@ -44,6 +44,17 @@ export default function Navbar() {
   }, [theme]);
 
   useEffect(() => {
+    if (window.innerWidth < 1024) {
+      document.body.style.overflow = open ? "hidden" : "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+
+  useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 16);
     };
@@ -115,6 +126,12 @@ export default function Navbar() {
     document.body.removeChild(link);
   };
 
+  const handleMobileNavigation = (link: string) => {
+    setActive(link);
+    setOpen(false);
+  };
+
+
   return (
     <>
       <header
@@ -124,6 +141,7 @@ export default function Navbar() {
             : "py-5"
         }`}
       >
+
         <nav className="max-w-7xl mx-auto px-6 lg:px-10 flex items-center justify-between">
           <a
             href="#home"
@@ -137,6 +155,7 @@ export default function Navbar() {
           </a>
 
           <ul className="hidden lg:flex items-center gap-10 list-none">
+
             {NAV_LINKS.map((link) => (
               <li key={link}>
                 <a
@@ -152,6 +171,7 @@ export default function Navbar() {
                 </a>
               </li>
             ))}
+
           </ul>
 
           <div className="hidden lg:flex items-center gap-3">
@@ -197,8 +217,8 @@ export default function Navbar() {
                 />
               </span>
             </button>
-
           </div>
+
           <div className="flex lg:hidden items-center gap-3">
             <button
               type="button"
@@ -233,6 +253,7 @@ export default function Navbar() {
               onClick={() => setOpen(!open)}
               className="menu-toggle grid place-items-center w-10 h-10 rounded-full border transition-all duration-300"
               aria-label="Toggle menu"
+              aria-expanded={open}
             >
               {open ? (
                 <X size={18} />
@@ -250,17 +271,18 @@ export default function Navbar() {
               : "max-h-0 opacity-0"
           }`}
         >
+
           {NAV_LINKS.map((link) => (
             <div
               key={link}
               className="mobile-menu-item"
             >
+
               <a
                 href={`#${link.toLowerCase()}`}
-                onClick={() => {
-                  setActive(link);
-                  setOpen(false);
-                }}
+                onClick={() =>
+                  handleMobileNavigation(link)
+                }
                 className={`nav-link inline-block py-3 text-sm font-medium ${
                   active === link
                     ? "nav-active"
@@ -269,8 +291,10 @@ export default function Navbar() {
               >
                 {link}
               </a>
+
             </div>
           ))}
+
         </div>
       </header>
 
@@ -279,12 +303,14 @@ export default function Navbar() {
         onClick={downloadCV}
         aria-label="Download CV"
         title="Download CV"
-        className="lg:hidden fixed right-5 bottom-6 z-100 grid place-items-center w-14 h-14 rounded-full btn-gradient text-black shadow-lg cv-floating border ">
+        className="lg:hidden fixed right-5 bottom-6 z-100 grid place-items-center w-14 h-14 rounded-full btn-gradient
+         text-black shadow-lg cv-floating border">
         <Download
           size={20}
           strokeWidth={2.2}
         />
       </button>
+
     </>
   );
 }
