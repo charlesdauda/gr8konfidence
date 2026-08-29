@@ -1,8 +1,7 @@
-// About.tsx — reverted, no floating icons
 const STATS = [
-  { value: "150+", label: "Projects Completed" },
+  { value: "1k+", label: "Projects Completed" },
   { value: "100+", label: "Happy Clients" },
-  { value: "10+", label: "Awards Received" },
+  { value: "10+", label: "Awards Received" }
 ];
 
 export default function About() {

@@ -5,8 +5,6 @@ import "swiper/css";
 import "swiper/css/pagination";
 import type { Swiper as SwiperClass } from "swiper";
 
-// Replace these with your real photos — same import pattern as Work.tsx.
-// Two per streamer is just a placeholder count, add/remove as needed.
 import Kweku1 from "../assets/images/post1.png";
 import Kweku2 from "../assets/images/post1.png";
 import Eli1 from "../assets/images/post1.png";

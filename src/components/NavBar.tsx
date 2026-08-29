@@ -1,12 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  Menu,
-  X,
-  ArrowUpRight,
-  Moon,
-  Sun,
-  Download,
-} from "lucide-react";
+import { Menu, X, ArrowUpRight,Moon, Sun, Download,} from "lucide-react";
 
 import LogoImg from "../assets/images/logo.png";
 
