@@ -90,14 +90,6 @@ export default function Hero() {
                 <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-black/70 to-transparent pointer-events-none" />
               </div>
             </div>
-
-            <span className="font-signature absolute -bottom-5 -right-1 text-3xl text-brand-green">
-              gk.
-            </span>
-
-            <span className="absolute -bottom-6 -left-6 w-16 h-16 rounded-full border border-white/15 grid place-items-center bg-black animate-spin-slow">
-              <span className="w-2 h-2 rounded-full bg-emerald-500" />
-            </span>
           </div>
         </div>
       </div>

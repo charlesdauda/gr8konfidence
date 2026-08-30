@@ -59,7 +59,6 @@ function StreamerImage({ item, index }: { item: Streamer; index: number }) {
         className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
       />
 
-      {/* caption: always visible on mobile (no hover there), reveals on hover from sm up */}
       <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent opacity-100 transition-opacity duration-500 sm:opacity-0 sm:group-hover:opacity-100" />
       <span className="absolute bottom-4 left-4 text-sm font-medium text-white transition-all duration-300 sm:translate-y-1 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100">
         {item.name}
@@ -107,14 +106,12 @@ export default function Streamers() {
           </div>
         </div>
 
-        {/* grid — tablet & desktop, images only, no card chrome */}
         <div key={active} className="hidden sm:grid sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {filtered.map((item, i) => (
             <StreamerImage key={item.id} item={item} index={i} />
           ))}
         </div>
 
-        {/* swiper — mobile only, autoplaying */}
         <div className="sm:hidden">
           <Swiper
             key={active}

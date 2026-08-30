@@ -217,7 +217,6 @@ export default function Work() {
   const filtered: Project[] =
     active === "All" ? PROJECTS : PROJECTS.filter((p) => p.category === active);
 
-  // one-time hint when the Work section scrolls into view
   useEffect(() => {
     const el = sectionRef.current;
     if (!el) return;
@@ -239,7 +238,6 @@ export default function Work() {
     return () => observer.disconnect();
   }, []);
 
-  // pause the background mobile swiper's autoplay while the lightbox is open
   useEffect(() => {
     if (lightboxIndex !== null) {
       workSwiperRef.current?.autoplay?.stop();
@@ -279,14 +277,12 @@ export default function Work() {
           </div>
         </div>
 
-        {/* grid — tablet & desktop, unchanged */}
         <div key={active} className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {filtered.map((item, i) => (
             <ProjectCard key={item.id} item={item} index={i} onOpen={() => setLightboxIndex(i)} />
           ))}
         </div>
 
-        {/* swiper — mobile only, cards swipe one by one */}
         <div className="sm:hidden">
           <Swiper
             key={active}
