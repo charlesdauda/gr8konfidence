@@ -25,7 +25,7 @@ export function prefetchImages(sources: string[]): void {
       img.src = src;
     });
   };
-
+//error catch
   if (typeof window.requestIdleCallback === "function") {
     window.requestIdleCallback(load, { timeout: 2000 });
   } else {
