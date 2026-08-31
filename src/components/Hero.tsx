@@ -1,7 +1,7 @@
 import { ArrowUpRight, MessageCircle } from "lucide-react";
 import { FaInstagram, FaTwitter, FaLinkedin } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa6";
-import HeroImge from "../assets/images/heroimage.png";
+import HeroImge from "../assets/images/heroimg.png";
 
 const SOCIALS = [FaInstagram, FaTwitter, FaLinkedin, FaGithub];
 
@@ -82,10 +82,11 @@ export default function Hero() {
             >
               <div className="relative aspect-4/5 rounded-[calc(1.5rem-1px)] overflow-hidden portrait-frame">
                 <img
-                  src={HeroImge}
-                  alt="Portrait of Gr8Konfidence"
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
+                    src={HeroImge}
+                    alt="Portrait of Gr8Konfidence"
+                    fetchPriority="high"
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
 
                 <div className="absolute inset-x-0 bottom-0 h-28 bg-linear-to-t from-black/70 to-transparent pointer-events-none" />
               </div>

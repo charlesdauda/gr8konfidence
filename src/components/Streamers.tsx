@@ -1,37 +1,43 @@
-import { useRef, useState, type CSSProperties } from "react";
+import { useRef, type CSSProperties } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import type { Swiper as SwiperClass } from "swiper";
 
-import Kweku1 from "../assets/images/post1.png";
-import Kweku2 from "../assets/images/post1.png";
-import Eli1 from "../assets/images/post1.png";
-import Eli2 from "../assets/images/post1.png";
-import Mig1 from "../assets/images/post1.png";
-import Mig2 from "../assets/images/post1.png";
-import Sarah1 from "../assets/images/post1.png";
-import Sarah2 from "../assets/images/post1.png";
+import made1 from "../assets/images/made1.png";
+import carterefe from "../assets/images/carterefe.png";
+import themgotalk from "../assets/images/themgotalk.png"
+import kev1 from "../assets/images/kev1.png";
+import kweku from "../assets/images/kwewkuaddo.png"
+import eli from "../assets/images/eli1.png"
+import kai from "../assets/images/kaicenat.png"
+import made2 from "../assets/images/made2.png";
+import made3 from "../assets/images/made3.png";
+import kev3 from "../assets/images/kev3.png";
+import skai from "../assets/images/skai.png"
+import kev2 from "../assets/images/kev2.png";
 
-const CATEGORIES = ["All", "Kweku Addo", "Cruise with Eli", "Made in Ghana", "Sarah Jackson"];
 
 type Streamer = {
   id: number;
   name: string;
-  streamer: string;
   image: string;
 };
 
 const STREAMERS: Streamer[] = [
-  { id: 1, name: "Kweku Addo", streamer: "Kweku Addo", image: Kweku1 },
-  { id: 2, name: "Kweku Addo", streamer: "Kweku Addo", image: Kweku2 },
-  { id: 3, name: "Cruise with Eli", streamer: "Cruise with Eli", image: Eli1 },
-  { id: 4, name: "Cruise with Eli", streamer: "Cruise with Eli", image: Eli2 },
-  { id: 5, name: "Made in Ghana", streamer: "Made in Ghana", image: Mig1 },
-  { id: 6, name: "Made in Ghana", streamer: "Made in Ghana", image: Mig2 },
-  { id: 7, name: "Sarah Jackson", streamer: "Sarah Jackson", image: Sarah1 },
-  { id: 8, name: "Sarah Jackson", streamer: "Sarah Jackson", image: Sarah2 },
+  { id: 1, name: "Made in Ghana", image: made1 },
+  { id: 2, name: "Carterefe", image: carterefe},
+  { id: 3, name: "ThemgoTalk", image: themgotalk},
+  { id: 4, name: "Kev the Wave", image: kev1},
+  { id: 5, name: "Kweku Addo", image: kweku},
+  { id: 6, name: "Cruise with Eli", image: eli},
+  { id: 7, name: "Kev the Wave", image: kev2},
+  { id: 8, name: "Kai Cenat", image: kai},
+  { id: 9, name: "Kev the Wave", image: kev3},
+  { id: 10, name: "Skai Jackson", image: skai},
+  { id: 11, name: "Made in Ghana", image: made2 },
+  { id: 12, name: "Made in Ghana", image: made3 },
 ];
 
 const DELAYS = ["delay-1", "delay-2", "delay-3", "delay-4", "delay-5"];
@@ -59,6 +65,7 @@ function StreamerImage({ item, index }: { item: Streamer; index: number }) {
         className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
       />
 
+      {/* caption: always visible on mobile (no hover there), reveals on hover from sm up */}
       <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent opacity-100 transition-opacity duration-500 sm:opacity-0 sm:group-hover:opacity-100" />
       <span className="absolute bottom-4 left-4 text-sm font-medium text-white transition-all duration-300 sm:translate-y-1 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100">
         {item.name}
@@ -68,57 +75,38 @@ function StreamerImage({ item, index }: { item: Streamer; index: number }) {
 }
 
 export default function Streamers() {
-  const [active, setActive] = useState<string>("All");
   const paginationRef = useRef<HTMLDivElement | null>(null);
   const swiperRef = useRef<SwiperClass | null>(null);
-
-  const filtered: Streamer[] =
-    active === "All" ? STREAMERS : STREAMERS.filter((s) => s.streamer === active);
 
   return (
     <section id="streamers" className="relative py-24 sm:py-32">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         {/* header */}
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-14">
-          <div>
-            <p className="text-xs font-bold tracking-widest uppercase text-brand-green mb-3">
-              Collaborations
-            </p>
-            <h2 className="font-display font-bold text-4xl sm:text-5xl text-white leading-tight">
-              Streamers I&apos;ve
-              <br className="hidden sm:block" /> Worked{" "}
-              <span className="gradient-text">With.</span>
-            </h2>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setActive(cat)}
-                className={`filter-pill px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                  active === cat ? "active" : "text-white/55 hover:text-white hover:bg-white/5"
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
-          </div>
+        <div className="mb-14">
+          <p className="text-xs font-bold tracking-widest uppercase text-brand-green mb-3">
+            Collaborations
+          </p>
+          <h2 className="font-display font-bold text-4xl sm:text-5xl text-white leading-tight">
+            Streamers I&apos;ve
+            <br className="hidden sm:block" /> Worked{" "}
+            <span className="gradient-text">With.</span>
+          </h2>
         </div>
 
-        <div key={active} className="hidden sm:grid sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filtered.map((item, i) => (
+        {/* grid — tablet & desktop, images only, no card chrome */}
+        <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {STREAMERS.map((item, i) => (
             <StreamerImage key={item.id} item={item} index={i} />
           ))}
         </div>
 
+        {/* swiper — mobile only, autoplaying */}
         <div className="sm:hidden">
           <Swiper
-            key={active}
             modules={[Autoplay, Pagination]}
             slidesPerView={1}
             spaceBetween={16}
-            loop={filtered.length > 3}
+            loop
             autoplay={{ delay: 3200, disableOnInteraction: false, pauseOnMouseEnter: true }}
             pagination={{ clickable: true, el: paginationRef.current }}
             onSwiper={(s) => {
@@ -130,7 +118,7 @@ export default function Streamers() {
               }
             }}
           >
-            {filtered.map((item, i) => (
+            {STREAMERS.map((item, i) => (
               <SwiperSlide key={item.id}>
                 <StreamerImage item={item} index={i} />
               </SwiperSlide>
