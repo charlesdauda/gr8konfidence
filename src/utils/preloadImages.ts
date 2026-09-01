@@ -22,18 +22,21 @@ export function prefetchImages(sources: string[]): void {
       if (!src || alreadyHandled.has(src)) return;
       alreadyHandled.add(src);
       
-      // Use preload link instead of Image object for better reliability
+      // Use prefetch link tag for better browser support and reliability
       const link = document.createElement("link");
       link.rel = "prefetch";
       link.as = "image";
       link.href = src;
+      link.crossOrigin = "anonymous";
       document.head.appendChild(link);
     });
   };
 
+  // Use requestIdleCallback with a timeout for better performance
+  // Falls back to setTimeout if not available
   if (typeof window.requestIdleCallback === "function") {
     window.requestIdleCallback(load, { timeout: 2000 });
   } else {
-    setTimeout(load, 200);
+    setTimeout(load, 100);
   }
 }

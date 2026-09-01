@@ -87,6 +87,7 @@ function ProjectCard({ item, index, onOpen }: ProjectCardProps) {
           alt={item.title}
           loading="eager"
           decoding="async"
+          fetchPriority="high"
           className="absolute inset-0 w-full h-full object-cover object-top scale-105 group-hover:object-bottom group-hover:scale-110"
           style={{ transition: "transform 700ms ease-out, object-position 3500ms ease-in-out" }}
         />

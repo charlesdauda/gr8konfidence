@@ -39,6 +39,12 @@ const STREAMER_IMAGES = [
 ];
 
 export function preloadSiteImages(): void {
+  // High priority for hero image
   preloadImage(HeroImge, "high");
-  prefetchImages([...WORK_IMAGES, ...STREAMER_IMAGES]);
+  
+  // Preload all streamer images with high priority since they're critical
+  STREAMER_IMAGES.forEach(img => preloadImage(img, "high"));
+  
+  // Prefetch work images with lower priority
+  prefetchImages(WORK_IMAGES);
 }

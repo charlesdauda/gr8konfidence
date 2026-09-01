@@ -62,8 +62,7 @@ function StreamerImage({ item, index }: { item: Streamer; index: number }) {
         src={item.image}
         alt={item.name}
         loading="lazy"
-        decoding="async"
-        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+        decoding="async"        fetchPriority="high"        className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
       />
 
       {/* caption: always visible on mobile (no hover there), reveals on hover from sm up */}

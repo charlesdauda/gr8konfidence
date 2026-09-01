@@ -35,7 +35,7 @@ export default function Hero() {
               </span>
             </a>
 
-            <a href= "#" className="group flex items-center gap-3 text-sm font-medium text-white/80">
+            <a href="#contact" className="group flex items-center gap-3 text-sm font-medium text-white/80">
               <span className="grid place-items-center w-12 h-12 rounded-full border border-white/15 group-hover:border-emerald-500 group-hover:bg-emerald-500/10 transition-all duration-300">
                 <MessageCircle size={14} className="ml-0.5" fill="currentColor" />
               </span>

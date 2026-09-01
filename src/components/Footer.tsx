@@ -3,10 +3,10 @@ import { FaGithub } from "react-icons/fa6";
 import Logo from "../assets/images/logo.png";
 
 const SOCIALS = [
-  { icon: FaInstagram, href: "#", label: "Instagram" },
-  { icon: FaTwitter, href: "#", label: "Twitter" },
-  { icon: FaLinkedin, href: "#", label: "LinkedIn" },
-  { icon: FaGithub, href: "#", label: "GitHub" },
+  { icon: FaInstagram, href: "https://instagram.com", label: "Instagram" },
+  { icon: FaTwitter, href: "https://twitter.com", label: "Twitter" },
+  { icon: FaLinkedin, href: "https://linkedin.com", label: "LinkedIn" },
+  { icon: FaGithub, href: "https://github.com", label: "GitHub" },
 ];
 
 export default function Footer() {
