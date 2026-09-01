@@ -296,8 +296,10 @@ export default function Navbar() {
         onClick={downloadCV}
         aria-label="Download CV"
         title="Download CV"
-        className="lg:hidden fixed right-5 bottom-6 z-100 grid place-items-center w-14 h-14 rounded-full btn-gradient
-         text-black shadow-lg cv-floating border">
+        className="lg:hidden fixed right-5 bottom-6 z-100 grid place-items-center w-14 h-14 rounded-full text-white shadow-lg hover:shadow-xl transition-shadow duration-300"
+        style={{
+          backgroundImage: "linear-gradient(135deg, #10b981, #2563eb)",
+        }}>
         <Download
           size={20}
           strokeWidth={2.2}
