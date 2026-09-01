@@ -62,6 +62,7 @@ function StreamerImage({ item, index }: { item: Streamer; index: number }) {
         src={item.image}
         alt={item.name}
         loading="lazy"
+        decoding="async"
         className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
       />
 

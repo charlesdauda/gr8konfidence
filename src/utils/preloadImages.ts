@@ -21,11 +21,16 @@ export function prefetchImages(sources: string[]): void {
     sources.forEach((src) => {
       if (!src || alreadyHandled.has(src)) return;
       alreadyHandled.add(src);
-      const img = new Image();
-      img.src = src;
+      
+      // Use preload link instead of Image object for better reliability
+      const link = document.createElement("link");
+      link.rel = "prefetch";
+      link.as = "image";
+      link.href = src;
+      document.head.appendChild(link);
     });
   };
-//error catch
+
   if (typeof window.requestIdleCallback === "function") {
     window.requestIdleCallback(load, { timeout: 2000 });
   } else {

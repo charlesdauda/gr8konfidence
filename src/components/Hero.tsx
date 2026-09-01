@@ -1,9 +1,5 @@
 import { ArrowUpRight, MessageCircle } from "lucide-react";
-import { FaInstagram, FaTwitter, FaLinkedin } from "react-icons/fa";
-import { FaGithub } from "react-icons/fa6";
 import HeroImge from "../assets/images/heroimg.png";
-
-const SOCIALS = [FaInstagram, FaTwitter, FaLinkedin, FaGithub];
 
 export default function Hero() {
   return (
@@ -13,19 +9,6 @@ export default function Hero() {
 
       <div className="max-w-7xl mx-auto px-6 lg:px-10 grid lg:grid-cols-2 gap-16 items-center">
         <div className="relative">
-          <div className="hidden lg:flex flex-col items-center gap-5 absolute -left-16 top-1">
-            {SOCIALS.map((Icon, i) => (
-              <a
-                key={i}
-                href="#"
-                className="w-10 h-10 grid place-items-center rounded-full border border-white/10 text-white/50 hover:text-white hover:border-emerald-500 hover:-translate-y-1 transition-all duration-300"
-              >
-                <Icon size={15} />
-              </a>
-            ))}
-            <span className="w-px h-16 bg-white/10" />
-          </div>
-
           <p className="animate-fade-up delay-1 text-sm font-medium text-white/60 mb-5">
             Hello, I&apos;m <span className="text-brand-green font-bold">Gr8Konfidence</span>
           </p>
