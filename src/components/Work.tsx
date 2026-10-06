@@ -1,10 +1,8 @@
-import { useEffect, useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
+import { Autoplay } from "swiper/modules";
 import "swiper/css";
-import "swiper/css/pagination";
-import { ArrowUpRight, X, ChevronLeft, ChevronRight, MousePointerClick } from "lucide-react";
-import type { Swiper as SwiperClass } from "swiper";
+import { ArrowUpRight, ChevronLeft, ChevronRight, X } from "lucide-react";
 
 import KonfBrand from "../assets/images/bus1.png";
 import CharlBrand from "../assets/images/bus2.png";
@@ -19,12 +17,13 @@ import Pod from "../assets/images/bus4.png";
 import KB from "../assets/images/post3.png";
 import TFK from "../assets/images/post4.png";
 
-const CATEGORIES = ["All", "Flyer", "Logo", "Event Flyer"];
+const CATEGORIES = ["All", "Flyer", "Logo", "Event Flyer"] as const;
+type Category = (typeof CATEGORIES)[number];
 
 type Project = {
   id: number;
   title: string;
-  category: string;
+  category: Exclude<Category, "All">;
   type: string;
   year: string;
   image: string;
@@ -45,232 +44,264 @@ const PROJECTS: Project[] = [
   { id: 12, title: "TFK", category: "Logo", type: "Podcast", year: "2026", image: TFK },
 ];
 
-const DELAYS = ["delay-1", "delay-2", "delay-3", "delay-4", "delay-5"];
+/* Adds a class once the element scrolls into view.
+   Without IntersectionObserver, content is simply shown. */
+function useReveal<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const [seen, setSeen] = useState(false);
 
-interface SwiperCSSVars extends CSSProperties {
-  "--swiper-pagination-color"?: string;
-  "--swiper-pagination-bullet-inactive-color"?: string;
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setSeen(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setSeen(true);
+          io.disconnect();
+        }
+      },
+      { threshold: 0.05, rootMargin: "0px 0px -4% 0px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return { ref, seen };
 }
 
-const swiperPaginationVars: SwiperCSSVars = {
-  position: "static",
-  "--swiper-pagination-color": "#16a34a",
-  "--swiper-pagination-bullet-inactive-color": "rgba(255,255,255,0.35)",
-};
-
-interface ProjectCardProps {
+/* ---------- One gallery item: image first, caption in plain text ---------- */
+function WorkItem({
+  item,
+  index,
+  onOpen,
+}: {
   item: Project;
   index: number;
-  onOpen?: () => void;
-}
+  onOpen: () => void;
+}) {
+  const { ref, seen } = useReveal<HTMLElement>();
 
-function ProjectCard({ item, index, onOpen }: ProjectCardProps) {
   return (
-    <div
-      className={`animate-fade-up ${DELAYS[index % DELAYS.length]} group relative rounded-3xl overflow-hidden border border-white/10 hover:border-emerald-500/40 transition-colors duration-500`}
+    <figure
+      ref={ref}
+      className={`reveal ${seen ? "is-in" : ""} break-inside-avoid mb-14 m-0`}
+      style={{ transitionDelay: `${(index % 3) * 80}ms` } as CSSProperties}
     >
-      <div
-        className="relative aspect-card overflow-hidden cursor-pointer"
+      <button
+        type="button"
         onClick={onOpen}
-        role="button"
-        tabIndex={0}
-        aria-label={`View full image of ${item.title}`}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            onOpen?.();
-          }
-        }}
+        aria-label={`View ${item.title} full size`}
+        className="work-open group relative block aspect-[4/5] w-full cursor-pointer rounded-md overflow-hidden"
+        style={{ backgroundColor: "var(--surface-soft)" }}
       >
         <img
           src={item.image}
           alt={item.title}
-          loading="eager"
+          loading="lazy"
           decoding="async"
-          fetchPriority="high"
-          className="absolute inset-0 w-full h-full object-cover object-top scale-105 group-hover:object-bottom group-hover:scale-110"
-          style={{ transition: "transform 700ms ease-out, object-position 3500ms ease-in-out" }}
+          className="absolute inset-0 block h-full w-full object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
         />
-
-        <span className="absolute top-4 left-4 px-3 py-1 rounded-full bg-black/50 backdrop-blur border border-white/10 text-xs font-medium text-white/80">
-          {item.type}
+        <span
+          aria-hidden
+          className="absolute inset-0 opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-500"
+          style={{ background: "linear-gradient(180deg, transparent 55%, rgba(4,6,10,0.5))" }}
+        />
+        <span
+          aria-hidden
+          className="absolute right-4 top-4 grid place-items-center w-10 h-10 rounded-full opacity-0 -translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 group-focus-visible:opacity-100 group-focus-visible:translate-y-0 transition-all duration-500"
+          style={{ background: "rgba(255,255,255,0.94)", color: "#06210f" }}
+        >
+          <ArrowUpRight size={18} strokeWidth={2.3} />
         </span>
+      </button>
 
-        <span className="absolute top-4 right-4 grid place-items-center w-10 h-10 rounded-full bg-white/10 backdrop-blur border border-white/10 text-white opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
-          <ArrowUpRight size={16} />
-        </span>
-
-        <div className="absolute inset-0 bg-linear-to-t from-black via-black/10 to-transparent" />
-      </div>
-
-      <div className="p-5">
-        <h3 className="font-display font-semibold text-lg text-white mb-1">{item.title}</h3>
-        <div className="flex items-center justify-between text-sm text-white/45">
-          <span>{item.type}</span>
-          <span>{item.year}</span>
+      <figcaption className="mt-4 flex items-start justify-between gap-4">
+        <div>
+          <p className="font-semibold leading-snug" style={{ color: "var(--text-primary)" }}>
+            {item.title}
+          </p>
+          <p className="text-sm mt-0.5" style={{ color: "var(--text-muted)" }}>
+            {item.type}
+          </p>
         </div>
-      </div>
-    </div>
+        <p className="text-sm tabular-nums shrink-0" style={{ color: "var(--text-muted)" }}>
+          {item.year}
+        </p>
+      </figcaption>
+    </figure>
   );
 }
 
-interface LightboxProps {
+/* ---------- Full-size viewer ---------- */
+function Lightbox({
+  projects,
+  index,
+  onClose,
+  onChange,
+}: {
   projects: Project[];
-  initialIndex: number;
+  index: number;
   onClose: () => void;
-}
+  onChange: (i: number) => void;
+}) {
+  const item = projects[index];
+  const touchX = useRef<number | null>(null);
 
-function Lightbox({ projects, initialIndex, onClose }: LightboxProps) {
-  const swiperInstance = useRef<SwiperClass | null>(null);
+  const prev = useCallback(
+    () => onChange((index - 1 + projects.length) % projects.length),
+    [index, projects.length, onChange]
+  );
+  const next = useCallback(
+    () => onChange((index + 1) % projects.length),
+    [index, projects.length, onChange]
+  );
 
   useEffect(() => {
-    document.body.style.overflow = "hidden";
-    const onKeyDown = (e: KeyboardEvent) => {
+    const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
-      if (e.key === "ArrowRight") swiperInstance.current?.slideNext();
-      if (e.key === "ArrowLeft") swiperInstance.current?.slidePrev();
+      if (e.key === "ArrowLeft") prev();
+      if (e.key === "ArrowRight") next();
     };
-    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("keydown", onKey);
+    const before = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
     return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = before;
     };
-  }, [onClose]);
+  }, [onClose, prev, next]);
+
+  const ctrl =
+    "grid place-items-center w-11 h-11 rounded-full border transition-colors duration-300 hover:border-[var(--color-green)]";
+  const ctrlStyle: CSSProperties = {
+    color: "#fff",
+    borderColor: "rgba(255,255,255,0.25)",
+    background: "rgba(255,255,255,0.08)",
+  };
 
   return (
     <div
-      className="fixed inset-0 z-100 bg-black/90 backdrop-blur-md flex items-center justify-center animate-fade-in"
+      role="dialog"
+      aria-modal="true"
+      aria-label={item.title}
+      className="fixed inset-0 flex flex-col animate-fade-in"
+      style={{ zIndex: 200, background: "rgba(4,6,10,0.95)", backdropFilter: "blur(10px)" }}
       onClick={onClose}
+      onTouchStart={(e) => (touchX.current = e.touches[0].clientX)}
+      onTouchEnd={(e) => {
+        if (touchX.current === null) return;
+        const dx = e.changedTouches[0].clientX - touchX.current;
+        touchX.current = null;
+        if (Math.abs(dx) > 50) (dx < 0 ? next : prev)();
+      }}
     >
-      <button
-        onClick={onClose}
-        aria-label="Close"
-        className="absolute top-5 right-5 z-10 grid place-items-center w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white transition-colors duration-300"
-      >
-        <X size={20} />
-      </button>
-
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          swiperInstance.current?.slidePrev();
-        }}
-        aria-label="Previous image"
-        className="hidden sm:grid absolute left-5 top-1/2 -translate-y-1/2 z-10 place-items-center w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white transition-colors duration-300"
-      >
-        <ChevronLeft size={20} />
-      </button>
-
-      <button
-        onClick={(e) => {
-          e.stopPropagation();
-          swiperInstance.current?.slideNext();
-        }}
-        aria-label="Next image"
-        className="hidden sm:grid absolute right-5 top-1/2 -translate-y-1/2 z-10 place-items-center w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white transition-colors duration-300"
-      >
-        <ChevronRight size={20} />
-      </button>
-
-      <div className="w-full h-full max-w-5xl max-h-[85vh] px-4" onClick={(e) => e.stopPropagation()}>
-        <Swiper
-          initialSlide={initialIndex}
-          spaceBetween={24}
-          slidesPerView={1}
-          grabCursor
-          onSwiper={(s) => {
-            swiperInstance.current = s;
-          }}
-          className="w-full h-full"
+      <div className="flex items-center justify-between px-5 sm:px-8 py-5">
+        <p className="text-sm tabular-nums" style={{ color: "rgba(255,255,255,0.55)" }}>
+          {index + 1} / {projects.length}
+        </p>
+        <button
+          type="button"
+          onClick={(e) => { e.stopPropagation(); onClose(); }}
+          aria-label="Close"
+          className={ctrl}
+          style={ctrlStyle}
+          autoFocus
         >
-          {projects.map((item) => (
-            <SwiperSlide key={item.id} className="flex items-center justify-center">
-              <div className="flex flex-col items-center gap-4 max-h-full">
-                <img
-                  src={item.image}
-                  alt={item.title}
-                  className="max-h-[70vh] max-w-full w-auto h-auto object-contain rounded-2xl border border-white/10"
-                />
-                <div className="text-center">
-                  <h3 className="font-display font-semibold text-lg text-white">{item.title}</h3>
-                  <p className="text-sm text-white/50">
-                    {item.type} · {item.year}
-                  </p>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+          <X size={18} />
+        </button>
+      </div>
+
+      <div className="relative flex-1 min-h-0 flex items-center justify-center px-4 sm:px-24">
+        <button
+          type="button"
+          onClick={(e) => { e.stopPropagation(); prev(); }}
+          aria-label="Previous project"
+          className={`${ctrl} hidden sm:grid absolute left-6`}
+          style={ctrlStyle}
+        >
+          <ChevronLeft size={20} />
+        </button>
+
+        <img
+          key={item.id}
+          src={item.image}
+          alt={item.title}
+          onClick={(e) => e.stopPropagation()}
+          className="animate-fade-in max-h-full max-w-full w-auto h-auto object-contain rounded-lg"
+        />
+
+        <button
+          type="button"
+          onClick={(e) => { e.stopPropagation(); next(); }}
+          aria-label="Next project"
+          className={`${ctrl} hidden sm:grid absolute right-6`}
+          style={ctrlStyle}
+        >
+          <ChevronRight size={20} />
+        </button>
+      </div>
+
+      <div className="px-6 py-6 text-center" onClick={(e) => e.stopPropagation()}>
+        <p className="font-display text-xl" style={{ color: "#fff" }}>
+          {item.title}
+        </p>
+        <p className="text-sm mt-1" style={{ color: "rgba(255,255,255,0.55)" }}>
+          {item.type}, {item.year}
+        </p>
       </div>
     </div>
   );
 }
 
+/* ---------- Section ---------- */
 export default function Work() {
-  const [active, setActive] = useState<string>("All");
-  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
-  const [showHint, setShowHint] = useState(false);
-  const paginationRef = useRef<HTMLDivElement | null>(null);
-  const workSwiperRef = useRef<SwiperClass | null>(null);
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const hasShownHint = useRef(false);
+  const [active, setActive] = useState<Category>("All");
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
 
-  const filtered: Project[] =
+  const filtered =
     active === "All" ? PROJECTS : PROJECTS.filter((p) => p.category === active);
 
-  useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasShownHint.current) {
-            hasShownHint.current = true;
-            setShowHint(true);
-            setTimeout(() => setShowHint(false), 4000);
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    if (lightboxIndex !== null) {
-      workSwiperRef.current?.autoplay?.stop();
-    } else {
-      workSwiperRef.current?.autoplay?.start();
-    }
-  }, [lightboxIndex]);
+  const close = useCallback(() => setOpenIndex(null), []);
 
   return (
-    <section id="work" ref={sectionRef} className="relative py-24 sm:py-32">
+    <section
+      id="work"
+      className="relative pt-24 pb-8 sm:py-32 overflow-hidden"
+      style={{ backgroundColor: "var(--page-bg)", color: "var(--text-primary)" }}
+    >
+      <div className="absolute -right-48 top-24 w-[28rem] h-[28rem] rounded-full hero-glow -z-10" />
+
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
-        {/* header */}
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-14">
+        {/* Heading + filters */}
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-16">
           <div>
-            <p className="text-xs font-bold tracking-widest uppercase text-brand-green mb-3">
-              Selected Works
-            </p>
-            <h2 className="font-display font-bold text-4xl sm:text-5xl text-white leading-tight">
-              Creative Work
-              <br className="hidden sm:block" /> That{" "}
-              <span className="gradient-text">Speaks.</span>
+            <h2
+              className="font-display text-4xl sm:text-5xl xl:text-6xl leading-[1.05]"
+              style={{ color: "var(--text-primary)" }}
+            >
+              Creative work
+              <br />
+              <span className="gradient-text">that speaks.</span>
             </h2>
+            <p className="mt-5 max-w-md" style={{ color: "var(--text-secondary)" }}>
+              Flyers, logos and event designs for brands, churches, creators and
+              communities. Tap any piece to see it in full.
+            </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div role="tablist" aria-label="Filter projects" className="flex flex-wrap gap-x-8 gap-y-3">
             {CATEGORIES.map((cat) => (
               <button
                 key={cat}
+                type="button"
+                role="tab"
+                aria-selected={active === cat}
                 onClick={() => setActive(cat)}
-                className={`filter-pill px-5 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
-                  active === cat ? "active" : "text-white/55 hover:text-white hover:bg-white/5"
-                }`}
+                className="work-tab"
               >
                 {cat}
               </button>
@@ -278,59 +309,42 @@ export default function Work() {
           </div>
         </div>
 
-        <div key={active} className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filtered.map((item, i) => (
-            <ProjectCard key={item.id} item={item} index={i} onOpen={() => setLightboxIndex(i)} />
-          ))}
-        </div>
-
         <div className="sm:hidden">
           <Swiper
             key={active}
-            modules={[Autoplay, Pagination]}
-            slidesPerView={1}
+            modules={[Autoplay]}
+            slidesPerView={1.12}
             spaceBetween={16}
-            loop={filtered.length > 3}
-            autoplay={{ delay: 3200, disableOnInteraction: false, pauseOnMouseEnter: true }}
-            pagination={{ clickable: true, el: paginationRef.current }}
-            onSwiper={(s) => {
-              workSwiperRef.current = s;
+            loop={filtered.length > 1}
+            autoplay={{
+              delay: 3500,
+              disableOnInteraction: false,
+              pauseOnMouseEnter: true,
             }}
-            onBeforeInit={(swiper) => {
-              if (swiper.params.pagination && typeof swiper.params.pagination !== "boolean") {
-                swiper.params.pagination.el = paginationRef.current;
-              }
-            }}
+            speed={600}
           >
             {filtered.map((item, i) => (
-              <SwiperSlide key={item.id}>
-                <ProjectCard item={item} index={i} onOpen={() => setLightboxIndex(i)} />
+              <SwiperSlide key={item.id} className="h-auto!">
+                <WorkItem item={item} index={i} onOpen={() => setOpenIndex(i)} />
               </SwiperSlide>
             ))}
           </Swiper>
+        </div>
 
-          <div
-            ref={paginationRef}
-            className="flex items-center justify-center gap-2 mt-6"
-            style={swiperPaginationVars}
-          />
+        {/* Gallery: consistent image frames keep every project the same size */}
+        <div key={active} className="hidden sm:block sm:columns-2 lg:columns-4 gap-x-8 lg:gap-x-8">
+          {filtered.map((item, i) => (
+            <WorkItem key={item.id} item={item} index={i} onOpen={() => setOpenIndex(i)} />
+          ))}
         </div>
       </div>
 
-      {showHint && (
-        <div className="fixed bottom-6 inset-x-0 z-60 flex justify-center px-6 animate-fade-in pointer-events-none">
-          <div className="flex items-center gap-2 px-5 py-3 rounded-full bg-black/80 backdrop-blur-xl border border-white/10 text-sm text-white/85 shadow-lg">
-            <MousePointerClick size={16} className="text-brand-green" />
-            Tap a card to see the full image
-          </div>
-        </div>
-      )}
-
-      {lightboxIndex !== null && (
+      {openIndex !== null && (
         <Lightbox
           projects={filtered}
-          initialIndex={lightboxIndex}
-          onClose={() => setLightboxIndex(null)}
+          index={openIndex}
+          onClose={close}
+          onChange={setOpenIndex}
         />
       )}
     </section>
