@@ -15,7 +15,7 @@ export default function Hero() {
     >
       {/* soft background: dotted texture + one centered glow */}
       <div className="absolute inset-0 -z-10 hero-noise" />
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[34rem] h-[34rem] max-w-[90vw] rounded-full hero-glow -z-10" />
+      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-136 h-136 max-w-[90vw] rounded-full hero-glow -z-10" />
 
       <div className="max-w-4xl mx-auto px-6 lg:px-10 flex flex-col items-center text-center">
         <p className="animate-fade-up delay-1 text-lg font-medium text-brand-blue mb-4">

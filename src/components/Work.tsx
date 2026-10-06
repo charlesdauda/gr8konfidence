@@ -95,7 +95,7 @@ function WorkItem({
         type="button"
         onClick={onOpen}
         aria-label={`View ${item.title} full size`}
-        className="work-open group relative block aspect-[4/5] w-full cursor-pointer rounded-md overflow-hidden"
+        className="work-open group relative block aspect-4/5 w-full cursor-pointer rounded-md overflow-hidden"
         style={{ backgroundColor: "var(--surface-soft)" }}
       >
         <img
@@ -103,7 +103,7 @@ function WorkItem({
           alt={item.title}
           loading="lazy"
           decoding="async"
-          className="absolute inset-0 block h-full w-full object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
+          className="absolute inset-0 block h-full w-full object-cover transition-transform duration-900 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.04]"
         />
         <span
           aria-hidden
@@ -176,7 +176,7 @@ function Lightbox({
   }, [onClose, prev, next]);
 
   const ctrl =
-    "grid place-items-center w-11 h-11 rounded-full border transition-colors duration-300 hover:border-[var(--color-green)]";
+    "grid place-items-center w-11 h-11 rounded-full border transition-colors duration-300 hover:border-(--color-green)";
   const ctrlStyle: CSSProperties = {
     color: "#fff",
     borderColor: "rgba(255,255,255,0.25)",
@@ -273,7 +273,7 @@ export default function Work() {
       className="relative pt-24 pb-8 sm:py-32 overflow-hidden"
       style={{ backgroundColor: "var(--page-bg)", color: "var(--text-primary)" }}
     >
-      <div className="absolute -right-48 top-24 w-[28rem] h-[28rem] rounded-full hero-glow -z-10" />
+      <div className="absolute -right-48 top-24 w-md h-112 rounded-full hero-glow -z-10" />
 
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
         {/* Heading + filters */}

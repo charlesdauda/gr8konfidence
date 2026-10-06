@@ -97,12 +97,12 @@ function StreamerItem({
           alt={item.name}
           loading="lazy"
           decoding="async"
-          className="absolute inset-0 h-full w-full object-cover transition-transform duration-[900ms] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]"
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-900 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.05]"
         />
       </button>
 
       <figcaption
-        className="mt-3 text-sm sm:text-base font-medium transition-colors duration-300 group-hover:text-[var(--color-green)]"
+        className="mt-3 text-sm sm:text-base font-medium transition-colors duration-300 group-hover:text-(--color-green)"
         style={{ color: "var(--text-primary)" }}
       >
         {item.name}
@@ -150,7 +150,7 @@ function Lightbox({
   }, [next, onClose, prev]);
 
   const controlClass =
-    "grid place-items-center w-11 h-11 rounded-full border transition-colors duration-300 hover:border-[var(--color-green)]";
+    "grid place-items-center w-11 h-11 rounded-full border transition-colors duration-300 hover:border-(--color-green)";
   const controlStyle = {
     color: "#fff",
     borderColor: "rgba(255,255,255,0.25)",

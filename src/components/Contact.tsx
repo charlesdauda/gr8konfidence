@@ -53,7 +53,7 @@ export default function Contact() {
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5 }}
         >
-          <p className="mb-3 text-sm font-bold tracking-[0.15em] text-[var(--color-green)]">
+          <p className="mb-3 text-sm font-bold tracking-[0.15em] text-(--color-green)">
             GET IN TOUCH
           </p>
           <h2 className="text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl">
@@ -65,14 +65,14 @@ export default function Contact() {
               Great.
             </span>
           </h2>
-          <p className="mt-4 max-w-md text-balance text-[var(--text-secondary)]">
+          <p className="mt-4 max-w-md text-balance text-(--text-secondary)">
             Have a project in mind? Tell me about it and I&apos;ll get back to you
             within a day or two.
           </p>
 
           <a
             href={`mailto:${CONTACT_EMAIL}`}
-            className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-[var(--text-secondary)] transition-colors hover:text-[var(--text-primary)]"
+            className="mt-8 inline-flex items-center gap-2 text-sm font-semibold text-(--text-secondary) transition-colors hover:text-(--text-primary)"
           >
             <Mail size={16} className="text-[#48ce85]" />
             {CONTACT_EMAIL}
@@ -85,7 +85,7 @@ export default function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
           transition={{ duration: 0.5, delay: 0.1 }}
-          className="relative overflow-hidden rounded-2xl border border-[var(--border-strong)] bg-[var(--surface)] p-6 sm:p-8"
+          className="relative overflow-hidden rounded-2xl border border-(--border-strong) bg-(--surface) p-6 sm:p-8"
         >
           <div
             aria-hidden
@@ -96,7 +96,7 @@ export default function Contact() {
             <div>
               <label
                 htmlFor="name"
-                className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]"
+                className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-(--text-muted)"
               >
                 Name
               </label>
@@ -108,14 +108,14 @@ export default function Contact() {
                 value={form.name}
                 onChange={handleChange}
                 placeholder="Your name"
-                className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface-soft)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none transition-colors placeholder:text-[var(--text-muted)] focus:border-[#48ce85]"
+                className="w-full rounded-xl border border-(--border-strong) bg-(--surface-soft) px-4 py-3 text-sm text-(--text-primary) outline-none transition-colors placeholder:text-(--text-muted) focus:border-[#48ce85]"
               />
             </div>
 
             <div>
               <label
                 htmlFor="email"
-                className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]"
+                className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-(--text-muted)"
               >
                 Email
               </label>
@@ -127,14 +127,14 @@ export default function Contact() {
                 value={form.email}
                 onChange={handleChange}
                 placeholder="you@example.com"
-                className="w-full rounded-xl border border-[var(--border-strong)] bg-[var(--surface-soft)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none transition-colors placeholder:text-[var(--text-muted)] focus:border-[#48ce85]"
+                className="w-full rounded-xl border border-(--border-strong) bg-(--surface-soft) px-4 py-3 text-sm text-(--text-primary) outline-none transition-colors placeholder:text-(--text-muted) focus:border-[#48ce85]"
               />
             </div>
 
             <div>
               <label
                 htmlFor="message"
-                className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-[var(--text-muted)]"
+                className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-(--text-muted)"
               >
                 Message
               </label>
@@ -146,7 +146,7 @@ export default function Contact() {
                 value={form.message}
                 onChange={handleChange}
                 placeholder="Tell me about your project..."
-                className="w-full resize-none rounded-xl border border-[var(--border-strong)] bg-[var(--surface-soft)] px-4 py-3 text-sm text-[var(--text-primary)] outline-none transition-colors placeholder:text-[var(--text-muted)] focus:border-[#48ce85]"
+                className="w-full resize-none rounded-xl border border-(--border-strong) bg-(--surface-soft) px-4 py-3 text-sm text-(--text-primary) outline-none transition-colors placeholder:text-(--text-muted) focus:border-[#48ce85]"
               />
             </div>
 
