@@ -1,15 +1,19 @@
-import About from "./components/About"
+import { lazy, Suspense } from "react"
 import Hero from "./components/Hero"
 import Navbar from "./components/NavBar"
-import Services from "./components/Services"
 
-const App = () =>{
+const About = lazy(() => import("./components/About"))
+const Services = lazy(() => import("./components/Services"))
+
+const App = () => {
   return(
     <>
     <Navbar />
     <Hero />
-    <About />
-    <Services />
+    <Suspense fallback={null}>
+      <About />
+      <Services />
+    </Suspense>
     </>
   )
 }

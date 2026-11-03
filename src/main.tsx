@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { MotionConfig } from "framer-motion";
-import "@fontsource/anton";
-import "@fontsource/bebas-neue";
-import "@fontsource/league-gothic";
+import "@fontsource/anton/latin-400.css";
+import "@fontsource/bebas-neue/latin-400.css";
+import "@fontsource/league-gothic/latin-400.css";
 import "@fontsource-variable/oswald";
 import "@fontsource-variable/inter";
 import "./index.css";
