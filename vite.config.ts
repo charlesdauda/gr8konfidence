@@ -8,6 +8,9 @@ export default defineConfig({
     react(), 
     tailwindcss()
   ],
+  resolve:{
+    dedupe: ["react", "react-dom"]
+  },
   build: {
     // Optimize images in the build
     assetsInlineLimit: 4096,
@@ -25,10 +28,4 @@ export default defineConfig({
       }
     }
   },
-  server: {
-    // Better caching headers in dev
-    headers: {
-      'Cache-Control': 'public, max-age=3600'
-    }
-  }
 })

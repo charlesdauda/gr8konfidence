@@ -1,319 +1,297 @@
-import { motion, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { motion, useInView, type Variants } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Pagination } from "swiper/modules";
+import { A11y, Autoplay, Keyboard } from "swiper/modules";
+import type SwiperCore from "swiper";
 import "swiper/css";
-import "swiper/css/pagination";
 import {
-  LayoutTemplate,
-  PenTool,
-  Sparkles,
-  Camera,
-  Video,
-  Image as ImageIcon,
+  ArrowUpRight,
+  Clapperboard,
+  Compass,
+  Fingerprint,
+  Megaphone,
+  MonitorSmartphone,
+  Palette,
   type LucideIcon,
 } from "lucide-react";
 
+const LABEL = "Services";
+const HEADLINE_ONE = "Crafted to make brands";
+const HEADLINE_TWO = "impossible to ignore.";
+const INTRO =
+  "From the first spark of an idea to the final pixel, I partner with ambitious teams to build creative work that looks exceptional and performs even better.";
+
+const CTA = { label: "Discuss a project", href: "#contact" };
+const AUTOPLAY_DELAY = 3500;
+
 type Service = {
-  id: string;
   title: string;
-  icon: LucideIcon;
-  accent: string;
   description: string;
-  tags: string[];
+  items: string[];
+  icon: LucideIcon;
 };
 
 const SERVICES: Service[] = [
   {
-    id: "flyers",
-    title: "Flyer Design",
-    icon: LayoutTemplate,
-    accent: "#48ce85",
+    title: "Art Direction",
     description:
-      "Eye-catching flyers designed to grab attention and get your message seen for events, promotions, and campaigns.",
-    tags: [
-      "Event Flyers",
-      "Promotional Flyers",
-      "Print & Digital",
-      "Social Media Flyers",
-    ],
+      "A clear visual point of view that unites every touchpoint, from the first concept to the final delivery.",
+    items: ["Concept development", "Visual language", "Creative leadership"],
+    icon: Palette,
   },
   {
-    id: "logo",
-    title: "Logo Design",
-    icon: PenTool,
-    accent: "#45ba8b",
+    title: "Brand Identity",
     description:
-      "Distinctive logos and brand marks that give your business a face people remember.",
-    tags: [
-      "Brand Identity",
-      "Logo Variations",
-      "Style Guides",
-      "Icon Design",
-    ],
+      "Distinctive identities and flexible systems that make your brand instantly recognisable and easy to scale.",
+    items: ["Logo & wordmark", "Brand guidelines", "Tone of voice"],
+    icon: Fingerprint,
   },
   {
-    id: "ai-animations",
-    title: "AI Animations",
-    icon: Sparkles,
-    accent: "#41a591",
+    title: "Campaigns",
     description:
-      "AI-powered motion and animated content that brings static designs to life, fast.",
-    tags: [
-      "Motion Graphics",
-      "AI-Generated Visuals",
-      "Animated Ads",
-      "Social Reels",
-    ],
+      "Big ideas, built to travel. Integrated campaigns that capture attention and move people to act.",
+    items: ["Campaign concepts", "Social & digital", "Launch creative"],
+    icon: Megaphone,
   },
   {
-    id: "photoshoot",
-    title: "Photoshoot",
-    icon: Camera,
-    accent: "#3e9196",
+    title: "Motion & Video",
     description:
-      "Professional photography that captures your brand, products, or moments with intention.",
-    tags: [
-      "Product Photography",
-      "Portrait Sessions",
-      "Event Coverage",
-      "Photo Editing",
-    ],
+      "Story-led motion design and film direction that bring your brand to life across every screen.",
+    items: ["Brand films", "Motion graphics", "Social video"],
+    icon: Clapperboard,
   },
   {
-    id: "videography",
-    title: "Videography",
-    icon: Video,
-    accent: "#3a7c9c",
+    title: "Web & Digital Design",
     description:
-      "Cinematic video production from concept to final cut commercials, events, and brand stories.",
-    tags: [
-      "Brand Videos",
-      "Event Coverage",
-      "Commercial Ads",
-      "Video Editing",
-    ],
+      "Fast, elegant websites and digital products designed around real people and real business goals.",
+    items: ["Website design", "UI / UX", "Design systems"],
+    icon: MonitorSmartphone,
   },
   {
-    id: "posters",
-    title: "Posters",
-    icon: ImageIcon,
-    accent: "#3768a2",
+    title: "Creative Strategy",
     description:
-      "Bold poster designs built to stand out on a wall, a feed, or a storefront window.",
-    tags: [
-      "Event Posters",
-      "Concert Posters",
-      "Movie Posters",
-      "Print-Ready Files",
-    ],
+      "Insight-driven thinking that turns a business challenge into a sharp, ownable creative direction.",
+    items: ["Brand positioning", "Audience insight", "Creative roadmaps"],
+    icon: Compass,
   },
 ];
 
-export default function ServicesSection() {
-  const prefersReducedMotion = useReducedMotion();
+const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
+
+const container: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
+};
+
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 28 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.9, ease } },
+};
+
+const lineReveal: Variants = {
+  hidden: { y: "115%" },
+  show: { y: 0, transition: { duration: 1, ease } },
+};
+
+export default function Services() {
+  const sectionRef = useRef<HTMLElement>(null);
+  const [swiper, setSwiper] = useState<SwiperCore | null>(null);
+
+  const inView = useInView(sectionRef, { amount: 0.25 });
+
+  // Respect the visitor's "reduce motion" setting: no auto-swiping for them.
+  const [reduceMotion] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+
+  // Only auto-swipe while the section is actually on screen.
+  useEffect(() => {
+    if (!swiper || swiper.destroyed || !swiper.autoplay || reduceMotion) return;
+    if (inView) swiper.autoplay.start();
+    else swiper.autoplay.stop();
+  }, [inView, swiper, reduceMotion]);
+
+  const pad = (n: number) => String(n).padStart(2, "0");
 
   return (
     <section
-      className="relative w-full overflow-hidden px-6 py-24"
+      ref={sectionRef}
       id="services"
-      style={{
-        backgroundColor: "var(--page-bg)",
-        color: "var(--text-primary)",
-      }}
+      className="relative isolate overflow-hidden bg-black py-20 sm:py-28 lg:py-36"
     >
-      <div className="relative mx-auto max-w-6xl">
+      {/* Oversized outlined word in the background */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute left-[-3%] bottom-4 -z-10 select-none font-gothic text-[clamp(8rem,26vw,24rem)] uppercase leading-none text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.05)]"
+      >
+        Services
+      </div>
 
+      {/* Soft brand glow */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute right-[-10%] top-[5%] h-[55vmin] w-[55vmin] rounded-full bg-blue-light/5 blur-[140px]" />
+        <div className="absolute bottom-[-10%] left-[10%] h-[50vmin] w-[50vmin] rounded-full bg-green/5 blur-[140px]" />
+      </div>
+
+      <div className="mx-auto w-full max-w-350 px-5 sm:px-8 lg:px-12">
+        {/* ───────── Header ───────── */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5 }}
-          className="mb-14"
+          variants={container}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-10% 0px" }}
+          className="flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between xl:gap-16"
         >
-          <p className="mb-3 text-sm font-bold tracking-[0.15em] text-[#16a34a]">
-            SELECTED SERVICES
-          </p>
-
-          <h2
-            className="text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl"
-            style={{ color: "var(--text-primary)" }}
-          >
-            What I{" "}
-            <span
-              className="bg-clip-text text-transparent"
-              style={{
-                backgroundImage:
-                  "linear-gradient(90deg, #48ce85, #3768a2)",
-              }}
+          <div>
+            <motion.p
+              variants={fadeUp}
+              className="font-oswald text-sm uppercase tracking-[0.2em] text-white/85"
             >
-              Offer.
-            </span>
-          </h2>
+              <span className="mr-2 text-green">[</span>
+              {LABEL}
+              <span className="ml-2 text-green">]</span>
+            </motion.p>
 
-          <p
-            className="mt-4 max-w-xl text-balance"
-            style={{ color: "var(--text-secondary)" }}
-          >
-            Comprehensive creative services tailored to bring your brand to
-            life. From concept to final delivery, I create bold, memorable
-            visuals.
-          </p>
+            <h2 className="mt-6">
+              <span className="block overflow-hidden pb-[0.04em]">
+                <motion.span
+                  variants={lineReveal}
+                  className="block font-anton text-[clamp(2.4rem,7.5vw,5.5rem)] xl:text-[clamp(3rem,4.6vw,4.75rem)] uppercase leading-[0.98] tracking-[0.005em] text-white"
+                >
+                  {HEADLINE_ONE}
+                </motion.span>
+              </span>
+              <span className="block overflow-hidden pb-[0.06em]">
+                <motion.span
+                  variants={lineReveal}
+                  className="block w-fit bg-linear-to-r from-green via-green-light to-blue-light bg-clip-text font-anton text-[clamp(2.4rem,7.5vw,5.5rem)] xl:text-[clamp(3rem,4.6vw,4.75rem)] uppercase leading-[0.98] tracking-[0.005em] text-transparent"
+                >
+                  {HEADLINE_TWO}
+                </motion.span>
+              </span>
+            </h2>
+          </div>
+
+          <div className="flex max-w-md flex-col gap-6 xl:pb-2">
+            <motion.p
+              variants={fadeUp}
+              className="text-[0.95rem] leading-relaxed text-white/60 sm:text-base"
+            >
+              {INTRO}
+            </motion.p>
+            <motion.a
+              variants={fadeUp}
+              href={CTA.href}
+              className="group flex w-fit items-center gap-2"
+            >
+              <span className="inline-flex h-12 items-center rounded-md bg-white px-6 font-oswald text-sm font-medium uppercase tracking-wider text-black transition-colors duration-300 group-hover:bg-green-light">
+                {CTA.label}
+              </span>
+              <span className="grid h-12 w-12 place-items-center rounded-md bg-green text-black transition-colors duration-300 group-hover:bg-blue-light">
+                <ArrowUpRight
+                  className="h-5 w-5 transition-transform duration-500 ease-out group-hover:rotate-45"
+                  strokeWidth={2}
+                />
+              </span>
+            </motion.a>
+          </div>
         </motion.div>
 
-        <div className="md:hidden">
+        {/* ───────── Carousel ───────── */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-8% 0px" }}
+          transition={{ duration: 1, ease, delay: 0.1 }}
+          className="mt-12 sm:mt-16"
+        >
           <Swiper
-            modules={[Autoplay, Pagination]}
-            slidesPerView={1.12}
-            spaceBetween={16}
+            modules={[Autoplay, Keyboard, A11y]}
+            onSwiper={setSwiper}
             loop
+            grabCursor
+            speed={900}
+            keyboard={{ enabled: true }}
             autoplay={
-              prefersReducedMotion
+              reduceMotion
                 ? false
                 : {
-                    delay: 4000,
+                    delay: AUTOPLAY_DELAY,
                     disableOnInteraction: false,
                     pauseOnMouseEnter: true,
                   }
             }
-            speed={prefersReducedMotion ? 0 : 500}
-            pagination={{
-              el: ".services-pagination",
-              clickable: true,
-              renderBullet: (index, className) =>
-                `<span class="${className}" style="background:${SERVICES[index % SERVICES.length].accent}"></span>`,
+            breakpoints={{
+              0: { slidesPerView: 1.12, spaceBetween: 14 },
+              640: { slidesPerView: 2.1, spaceBetween: 18 },
+              1024: { slidesPerView: 3.1, spaceBetween: 22 },
             }}
+            a11y={{ prevSlideMessage: "Previous service", nextSlideMessage: "Next service" }}
           >
-            {SERVICES.map((service) => (
-              <SwiperSlide
-                key={service.id}
-                className="h-auto! py-1"
-              >
-                <ServiceCard service={service} />
-              </SwiperSlide>
-            ))}
+            {SERVICES.map((service, i) => {
+              const Icon = service.icon;
+              return (
+                <SwiperSlide key={service.title} style={{ height: "auto" }}>
+                  <article className="group relative flex h-full select-none flex-col overflow-hidden rounded-lg border border-white/10 bg-white/3 p-6 transition-colors duration-500 hover:border-green/50 sm:p-8">
+                    {/* Hover glow */}
+                    <div
+                      aria-hidden
+                      className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-green/0 blur-3xl transition-colors duration-700 group-hover:bg-green/20"
+                    />
+
+                    {/* Top row: icon + number */}
+                    <div className="relative flex items-start justify-between">
+                      <span className="grid h-14 w-14 place-items-center rounded-full border border-white/15 bg-black text-green transition-colors duration-500 group-hover:border-green group-hover:bg-green group-hover:text-black">
+                        <Icon className="h-6 w-6" strokeWidth={1.6} />
+                      </span>
+                      <span className="font-gothic text-6xl leading-none text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.25)] transition-[-webkit-text-stroke-color] duration-500 group-hover:[-webkit-text-stroke:1px_var(--color-green-light)] sm:text-7xl">
+                        {pad(i + 1)}
+                      </span>
+                    </div>
+
+                    {/* Title + description */}
+                    <h3 className="relative mt-10 font-anton text-[1.75rem] uppercase leading-[1.05] tracking-wide text-white sm:text-3xl">
+                      {service.title}
+                    </h3>
+                    <p className="relative mt-4 text-[0.92rem] leading-relaxed text-white/60 sm:text-[0.95rem]">
+                      {service.description}
+                    </p>
+
+                    {/* Deliverables */}
+                    <ul className="relative mt-7 space-y-3 border-t border-white/10 pt-6">
+                      {service.items.map((item) => (
+                        <li
+                          key={item}
+                          className="flex items-center gap-3 font-oswald text-[0.8rem] uppercase tracking-[0.14em] text-white/80"
+                        >
+                          <span className="h-1.5 w-1.5 shrink-0 bg-green" />
+                          {item}
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* Footer link */}
+                    <a
+                      href="#contact"
+                      draggable={false}
+                      className="relative mt-auto flex items-center justify-between pt-8 font-oswald text-xs uppercase tracking-[0.18em] text-white/50 transition-colors duration-300 group-hover:text-white"
+                    >
+                      Start this project
+                      <ArrowUpRight
+                        className="h-5 w-5 text-green transition-transform duration-500 ease-out group-hover:rotate-45"
+                        strokeWidth={1.8}
+                      />
+                    </a>
+                  </article>
+                </SwiperSlide>
+              );
+            })}
           </Swiper>
 
-          <div className="services-pagination mt-6 flex flex-wrap justify-center gap-2" />
-        </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="hidden md:grid md:grid-cols-2 md:gap-5 lg:grid-cols-3"
-        >
-          {SERVICES.map((service) => (
-            <ServiceCard
-              key={service.id}
-              service={service}
-            />
-          ))}
         </motion.div>
       </div>
-
-
-      <style>{`
-        .services-pagination.swiper-pagination {
-          position: static !important;
-        }
-
-        .services-pagination .swiper-pagination-bullet {
-          width: 6px;
-          height: 6px;
-          border-radius: 9999px;
-          opacity: 0.35;
-          margin: 0 !important;
-          transition:
-            width 0.3s ease,
-            opacity 0.3s ease;
-        }
-
-        .services-pagination .swiper-pagination-bullet-active {
-          width: 24px;
-          opacity: 1;
-        }
-      `}</style>
     </section>
-  );
-}
-
-
-function ServiceCard({
-  service,
-}: {
-  service: Service;
-}) {
-  const Icon = service.icon;
-
-  return (
-    <div
-      className="group relative h-full overflow-hidden rounded-2xl border p-6 transition-colors duration-300"
-      style={{
-        backgroundColor: "var(--surface)",
-        borderColor: "var(--border)",
-      }}
-    >
-
-      <div
-        aria-hidden
-        className="absolute inset-x-0 top-0 h-0.75"
-        style={{
-          background: `linear-gradient(
-            90deg,
-            ${service.accent},
-            transparent
-          )`,
-        }}
-      />
-
-      <div
-        className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl"
-        style={{
-          backgroundColor: `${service.accent}1a`,
-          color: service.accent,
-        }}
-      >
-        <Icon
-          size={20}
-          strokeWidth={2.25}
-        />
-      </div>
-
-      <h3
-        className="mb-2 text-lg font-extrabold tracking-tight"
-        style={{
-          color: "var(--text-primary)",
-        }}
-      >
-        {service.title}
-      </h3>
-
-      <p
-        className="mb-6 text-sm leading-relaxed"
-        style={{
-          color: "var(--text-secondary)",
-        }}
-      >
-        {service.description}
-      </p>
-
-      <div className="flex flex-wrap gap-2">
-        {service.tags.map((tag) => (
-          <span
-            key={tag}
-            className="rounded-full border px-2.5 py-1 text-[11px] font-medium"
-            style={{
-              borderColor: "var(--border)",
-              backgroundColor: "var(--surface-soft)",
-              color: "var(--text-secondary)",
-            }}
-          >
-            {tag}
-          </span>
-        ))}
-      </div>
-
-    </div>
   );
 }

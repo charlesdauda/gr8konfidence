@@ -2,6 +2,21 @@
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
+## Development
+
+Run the app with Vite:
+
+```bash
+npm run dev
+```
+
+Open the URL printed by Vite, normally `http://localhost:5173/`. Do not open
+`index.html` with Live Server on port 5500; that injects a separate reload
+client and can produce a failed `ws://127.0.0.1:5500//ws` connection.
+
+If Chrome reports `504 (Outdated Optimize Dep)`, stop the dev server, remove
+`node_modules/.vite`, then run `npm run dev` again.
+
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh

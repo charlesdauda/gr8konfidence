@@ -1,14 +1,18 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.tsx'
-import { preloadSiteImages } from './utils/preloadAssets'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { MotionConfig } from "framer-motion";
+import "@fontsource/anton";
+import "@fontsource/bebas-neue";
+import "@fontsource/league-gothic";
+import "@fontsource-variable/oswald";
+import "@fontsource-variable/inter";
+import "./index.css";
+import App from "./App";
 
-// Preload images immediately before React mounts
-preloadSiteImages()
-
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <MotionConfig reducedMotion="user">
+      <App />
+    </MotionConfig>
+  </React.StrictMode>,
+);
