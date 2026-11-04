@@ -21,7 +21,7 @@ const HEADLINE_TWO = "impossible to ignore.";
 const INTRO =
   "From the first spark of an idea to the final pixel, I partner with ambitious teams to build creative work that looks exceptional and performs even better.";
 
-const CTA = { label: "Discuss a project", href: "#contact" };
+const CTA = { label: "Discuss a project", href: "https://wa.me/233599794810" };
 const AUTOPLAY_DELAY = 3500;
 
 type Service = {
