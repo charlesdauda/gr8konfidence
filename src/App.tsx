@@ -5,20 +5,21 @@ import Hero from "./components/Hero"
 import Navbar from "./components/NavBar"
 import Work from "./components/Work"
 import Contact from "./components/Contact"
+import Testimonials from "./components/Testimonials"
 
 const App = () => {
   useLayoutEffect(() => {
-    window.history.scrollRestoration = "manual";
-    window.scrollTo(0, 0);
+    const targetId = window.location.hash.slice(1);
+    const target = targetId ? document.getElementById(targetId) : null;
 
-    const resetScroll = () => window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    const frame = window.requestAnimationFrame(resetScroll);
-    window.addEventListener("pageshow", resetScroll);
+    if (target) {
+      const frame = window.requestAnimationFrame(() => {
+        target.scrollIntoView({ block: "start", behavior: "auto" });
+      });
+      return () => window.cancelAnimationFrame(frame);
+    }
 
-    return () => {
-      window.cancelAnimationFrame(frame);
-      window.removeEventListener("pageshow", resetScroll);
-    };
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
   }, []);
 
   return(
@@ -28,6 +29,7 @@ const App = () => {
     <About />
     <Services />
     <Work />
+    <Testimonials />
     <Contact />
     </>
   )

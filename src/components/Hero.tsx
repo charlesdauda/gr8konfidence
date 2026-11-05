@@ -95,7 +95,7 @@ export default function Hero() {
         <div className="absolute bottom-[-35%] right-[0%] h-[55vmin] w-[70vmin] rounded-full bg-blue-light/6 blur-[130px]" />
       </div>
 
-      <div className="mx-auto flex w-full max-w-350 flex-1 flex-col justify-between gap-12 px-5 pb-10 pt-24 sm:px-8 sm:pt-28 lg:px-12">
+      <div className="mx-auto flex w-full max-w-350 flex-1 flex-col justify-start gap-8 px-5 pb-10 pt-24 sm:px-8 sm:pt-28 lg:justify-between lg:gap-12 lg:px-12">
         {/* Top tags */}
         <motion.div
           variants={fadeUp}
