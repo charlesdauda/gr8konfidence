@@ -4,7 +4,6 @@ import { Menu, X } from "lucide-react";
 import logo from "../assets/images/logo.png";
 
 const NAME = "Your Name";
-const EMAIL = "hello@yourname.com";
 
 const NAV_LINKS = [
   { label: "Home", href: "#home" },
@@ -268,7 +267,7 @@ export default function Navbar() {
           >
             <nav aria-label="Mobile">
               <ul className="flex flex-col">
-                {NAV_LINKS.map((item, i) => {
+                {NAV_LINKS.map((item) => {
                   const isActive = active === item.href.slice(1);
                   return (
                     <li key={item.href} className="overflow-hidden border-b border-white/10">
@@ -278,15 +277,12 @@ export default function Navbar() {
                         aria-current={isActive ? "location" : undefined}
                         initial={{ y: "110%" }}
                         animate={{ y: 0 }}
-                        transition={{ duration: 0.7, ease, delay: 0.25 + i * 0.07 }}
+                        transition={{ duration: 0.7, ease }}
                         className={`flex items-baseline justify-between py-3.5 font-anton text-[clamp(2.5rem,12vw,4rem)] uppercase leading-none transition-colors active:text-green ${
                           isActive ? "text-green" : "text-white"
                         }`}
                       >
                         {item.label}
-                        <span className="font-oswald text-sm tracking-widest text-green">
-                          0{i + 1}
-                        </span>
                       </motion.a>
                     </li>
                   );
@@ -294,17 +290,6 @@ export default function Navbar() {
               </ul>
             </nav>
 
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, ease, delay: 0.7 }}
-              className="mt-10 flex flex-col gap-1 font-oswald text-sm uppercase tracking-widest text-white/60"
-            >
-              <span>Get in touch</span>
-              <a href={`mailto:${EMAIL}`} className="break-all text-base text-green-light">
-                {EMAIL}
-              </a>
-            </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
