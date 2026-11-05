@@ -4,7 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { A11y, Autoplay, Keyboard } from "swiper/modules";
 import type SwiperCore from "swiper";
 import "swiper/css";
-import { ArrowLeft, ArrowRight, Star } from "lucide-react";
+import { Star } from "lucide-react";
 import { FaQuoteRight } from "react-icons/fa6";
 
 /* ───────────── EDIT THESE ───────────── */
@@ -84,8 +84,6 @@ const lineReveal: Variants = {
   show: { y: 0, transition: { duration: 1, ease } },
 };
 
-const pad = (n: number) => String(n).padStart(2, "0");
-
 const initials = (name: string) =>
   name
     .trim()
@@ -102,33 +100,11 @@ const getRating = (rating?: number) => {
   return Math.min(MAX_RATING, Math.max(0, Math.round(normalizedRating)));
 };
 
-function ArrowButton({
-  direction,
-  onClick,
-}: {
-  direction: "prev" | "next";
-  onClick: () => void;
-}) {
-  const Icon = direction === "prev" ? ArrowLeft : ArrowRight;
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-label={direction === "prev" ? "Previous testimonial" : "Next testimonial"}
-      className="grid h-12 w-12 place-items-center rounded-full border border-white/15 text-white transition-colors duration-300 hover:border-green hover:bg-green hover:text-black active:scale-95 sm:h-14 sm:w-14"
-    >
-      <Icon className="h-5 w-5" strokeWidth={1.8} />
-    </button>
-  );
-}
-
 /* ───────────── Section ───────────── */
 
 export default function Testimonials() {
   const sectionRef = useRef<HTMLElement>(null);
-  const barRef = useRef<HTMLSpanElement>(null);
   const [swiper, setSwiper] = useState<SwiperCore | null>(null);
-  const [index, setIndex] = useState(0);
 
   const inView = useInView(sectionRef, { amount: 0.25 });
 
@@ -155,13 +131,6 @@ export default function Testimonials() {
     else swiper.autoplay.stop();
   }, [inView, swiper, reduceMotion]);
 
-  const total = TESTIMONIALS.length;
-  const resetProgress = () => {
-    if (barRef.current) {
-      barRef.current.style.transform = "scaleX(0)";
-    }
-  };
-
   return (
     <section
       ref={sectionRef}
@@ -178,8 +147,8 @@ export default function Testimonials() {
 
       {/* Soft brand glow */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute right-[-10%] top-[20%] h-[55vmin] w-[55vmin] rounded-full bg-green/5 blur-[140px]" />
-        <div className="absolute bottom-[-10%] left-[5%] h-[50vmin] w-[50vmin] rounded-full bg-blue-light/5 blur-[140px]" />
+        <div className="absolute right-[-10%] top-[20%] h-[55vmin] w-[55vmin] glow-green" />
+        <div className="absolute bottom-[-10%] left-[5%] h-[50vmin] w-[50vmin] glow-blue" />
       </div>
 
       <div className="mx-auto w-full max-w-350 px-5 sm:px-8 lg:px-12">
@@ -240,15 +209,6 @@ export default function Testimonials() {
           <Swiper
             modules={[Autoplay, Keyboard, A11y]}
             onSwiper={setSwiper}
-            onSlideChange={(s) => {
-              setIndex(s.realIndex);
-              resetProgress();
-            }}
-            onAutoplayTimeLeft={(_s, _ms, progress) => {
-              if (barRef.current) {
-                barRef.current.style.transform = `scaleX(${1 - progress})`;
-              }
-            }}
             loop
             grabCursor
             speed={900}
@@ -279,7 +239,7 @@ export default function Testimonials() {
                   {/* Hover glow */}
                   <div
                     aria-hidden
-                    className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-green/0 blur-3xl transition-colors duration-700 group-hover:bg-green/15"
+                    className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 glow-green-strong opacity-0 transition-opacity duration-700 group-hover:opacity-100"
                   />
 
                   {/* Top row: stars (left) + quote mark (right) */}
@@ -332,25 +292,6 @@ export default function Testimonials() {
             ))}
           </Swiper>
 
-          {/* Controls: counter + autoplay progress + arrows */}
-          <div className="mt-8 flex items-center gap-5 sm:mt-10 sm:gap-8">
-            <p className="font-anton text-xl leading-none tracking-wider text-white sm:text-2xl">
-              {pad(index + 1)}
-              <span className="text-white/30"> / {pad(total)}</span>
-            </p>
-
-            <div aria-hidden className="relative h-px flex-1 overflow-hidden bg-white/10">
-              <span
-                ref={barRef}
-                className="absolute inset-0 origin-left scale-x-0 bg-green"
-              />
-            </div>
-
-            <div className="flex items-center gap-3">
-              <ArrowButton direction="prev" onClick={() => swiper?.slidePrev()} />
-              <ArrowButton direction="next" onClick={() => swiper?.slideNext()} />
-            </div>
-          </div>
         </motion.div>
       </div>
     </section>

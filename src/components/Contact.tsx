@@ -190,8 +190,8 @@ export default function Contact() {
 
       {/* Soft brand glow */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-[-10%] top-[10%] h-[55vmin] w-[55vmin] rounded-full bg-green/5 blur-[140px]" />
-        <div className="absolute bottom-[0%] right-[-10%] h-[50vmin] w-[50vmin] rounded-full bg-blue-light/5 blur-[140px]" />
+        <div className="absolute left-[-10%] top-[10%] h-[55vmin] w-[55vmin] glow-green" />
+        <div className="absolute bottom-[0%] right-[-10%] h-[50vmin] w-[50vmin] glow-blue" />
       </div>
 
       <div className="mx-auto grid w-full max-w-350 items-start gap-14 px-5 sm:px-8 lg:grid-cols-12 lg:gap-16 lg:px-12">

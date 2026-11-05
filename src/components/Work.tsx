@@ -1,38 +1,45 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   AnimatePresence,
   motion,
   type Variants,
 } from "framer-motion";
 import WorkLightbox from "./WorkLightbox"
-import logo1 from "../assets/images/logo1.png";
-import logo2 from "../assets/images/logo2.png";
-import logo3 from "../assets/images/logo3.png";
 
-import flyer1 from "../assets/images/flyer1.png";
-import flyer2 from "../assets/images/flyer2.png";
-import flyer3 from "../assets/images/flyer3.png";
-import flyer4 from "../assets/images/flyer4.png";
-import flyer5 from "../assets/images/flyer5.png";
+/* Images: run `node scripts/optimize-images.mjs` once. It creates small .webp
+   copies of your PNGs, and these globs pick them up automatically. */
+const asUrls = (m: Record<string, unknown>) => m as Record<string, string>;
+const FULL = asUrls(
+  import.meta.glob("../assets/images/*.webp", { eager: true, query: "?url", import: "default" }),
+);
+const COVERS = asUrls(
+  import.meta.glob("../assets/images/covers/*.webp", { eager: true, query: "?url", import: "default" }),
+);
+const THUMBS = asUrls(
+  import.meta.glob("../assets/images/thumbs/*.webp", { eager: true, query: "?url", import: "default" }),
+);
 
-import streamer1 from "../assets/images/streamer1.png";
-import streamer2 from "../assets/images/streamer2.png";
-import streamer3 from "../assets/images/streamer3.png";
-import streamer4 from "../assets/images/streamer4.png";
-import streamer5 from "../assets/images/streamer5.png";
-import streamer6 from "../assets/images/streamer6.png";
-import streamer7 from "../assets/images/streamer7.png";
-import streamer8 from "../assets/images/streamer8.png";
-import streamer9 from "../assets/images/streamer9.png";
-import streamer10 from "../assets/images/streamer10.png";
-import streamer11 from "../assets/images/streamer11.png";
-import streamer12 from "../assets/images/streamer12.png";
+/** Collects files named like logo1, logo2 ... in number order. */
+const pick = (map: Record<string, string>, prefix: string) =>
+  Object.entries(map)
+    .map(([path, url]) => {
+      const m = path.match(/\/([A-Za-z]+)(\d+)\.webp$/);
+      return m && m[1] === prefix ? { n: Number(m[2]), url } : null;
+    })
+    .filter((x): x is { n: number; url: string } => x !== null)
+    .sort((a, b) => a.n - b.n)
+    .map((x) => x.url);
 
-import poster1 from "../assets/images/poster1.png";
-import poster2 from "../assets/images/poster2.png";
-import poster3 from "../assets/images/poster3.png";
-import poster4 from "../assets/images/poster4.png";
-import poster5 from "../assets/images/poster5.png";
+const group = (prefix: string) => ({
+  full: pick(FULL, prefix),
+  covers: pick(COVERS, prefix),
+  thumbs: pick(THUMBS, prefix),
+});
+
+const LOGOS = group("logo");
+const FLYERS = group("flyer");
+const STREAMERS = group("streamer");
+const POSTERS = group("poster");
 
 const LABEL = "Selected work";
 const HEADLINE_ONE = "Designs that";
@@ -40,31 +47,14 @@ const HEADLINE_TWO = "speak for themselves.";
 const INTRO =
   "A look at the logos, flyers, stream visuals and posters I've created. Pick a category to browse the full collection.";
 
-const LOGOS = [logo1, logo2, logo3];
-const FLYERS = [flyer1, flyer2, flyer3, flyer4, flyer5];
-const STREAMERS = [
-  streamer1,
-  streamer2,
-  streamer3,
-  streamer4,
-  streamer5,
-  streamer6,
-  streamer7,
-  streamer8,
-  streamer9,
-  streamer10,
-  streamer11,
-  streamer12,
-];
-const POSTERS = [poster1, poster2, poster3, poster4, poster5];
-const WORK_IMAGES = [...LOGOS, ...FLYERS, ...STREAMERS, ...POSTERS];
-
 type Category = {
   id: string;
   title: string;
   subtitle: string;
   folder: string;
   images: string[];
+  thumbs: string[];
+  cover?: string;
   span: string; // grid width on tablet/desktop
   glow: string; // placeholder tint
 };
@@ -75,36 +65,44 @@ const CATEGORIES: Category[] = [
     title: "Logo designs",
     subtitle: "Brand identity",
     folder: "src/assets/images/work/logos",
-    images: LOGOS,
+    images: LOGOS.full,
+    thumbs: LOGOS.thumbs,
+    cover: LOGOS.covers[0],
     span: "md:col-span-5",
-    glow: "bg-green/20",
+    glow: "glow-green-strong",
   },
   {
     id: "flyers",
     title: "Flyers",
     subtitle: "Print & digital promos",
     folder: "src/assets/images/work/flyers",
-    images: FLYERS,
+    images: FLYERS.full,
+    thumbs: FLYERS.thumbs,
+    cover: FLYERS.covers[0],
     span: "md:col-span-7",
-    glow: "bg-blue-light/20",
+    glow: "glow-blue",
   },
   {
     id: "streamers",
     title: "Streamer designs",
     subtitle: "Overlays, banners & branding",
     folder: "src/assets/images/work/streamers",
-    images: STREAMERS,
+    images: STREAMERS.full,
+    thumbs: STREAMERS.thumbs,
+    cover: STREAMERS.covers[0],
     span: "md:col-span-7",
-    glow: "bg-blue-light/20",
+    glow: "glow-blue",
   },
   {
     id: "posters",
     title: "Posters",
     subtitle: "Events & campaigns",
     folder: "src/assets/images/work/posters",
-    images: POSTERS,
+    images: POSTERS.full,
+    thumbs: POSTERS.thumbs,
+    cover: POSTERS.covers[0],
     span: "md:col-span-5",
-    glow: "bg-green/20",
+    glow: "glow-green-strong",
   },
 ];
 
@@ -130,8 +128,7 @@ const lineReveal: Variants = {
 /* ───────────── Card ───────────── */
 
 function WorkCard({ category, onOpen }: { category: Category; onOpen: () => void }) {
-  const { id, title, subtitle, images, span, glow } = category;
-  const cover = images[0];
+  const { id, title, subtitle, cover, span, glow } = category;
   const isPortraitPreview = id === "streamers" || id === "posters";
 
   return (
@@ -151,16 +148,14 @@ function WorkCard({ category, onOpen }: { category: Category; onOpen: () => void
           <img
             src={cover}
             alt=""
-            loading={id === "logos" ? "eager" : "lazy"}
+            loading="lazy"
             decoding="async"
             draggable={false}
             className="absolute inset-0 -z-10 h-full w-full object-cover transition-transform duration-1200 ease-out group-hover:scale-105"
           />
         ) : (
           <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden bg-neutral-950">
-            <div
-              className={`absolute -right-10 -top-10 h-64 w-64 rounded-full blur-3xl transition-transform duration-1000 group-hover:scale-125 ${glow}`}
-            />
+            <div className={`absolute -right-16 -top-16 h-80 w-80 ${glow}`} />
             <span className="absolute -bottom-4 right-4 select-none font-gothic text-[9rem] uppercase leading-none text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.1)] sm:text-[11rem]">
               {title.split(" ")[0]}
             </span>
@@ -180,7 +175,6 @@ function WorkCard({ category, onOpen }: { category: Category; onOpen: () => void
           </h3>
           <p className="mt-1 text-sm text-white/60">{subtitle}</p>
         </div>
-
       </button>
     </motion.div>
   );
@@ -191,56 +185,6 @@ function WorkCard({ category, onOpen }: { category: Category; onOpen: () => void
 export default function Work() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const active = CATEGORIES.find((c) => c.id === activeId) ?? null;
-
-  useEffect(() => {
-    const connection = (
-      navigator as Navigator & {
-        connection?: {
-          saveData?: boolean;
-          effectiveType?: string;
-        };
-      }
-    ).connection;
-    const isMobile = window.matchMedia("(max-width: 767px)").matches;
-    const isSlowConnection =
-      connection?.saveData ||
-      connection?.effectiveType === "slow-2g" ||
-      connection?.effectiveType === "2g";
-
-    let cancelled = false;
-    let nextIndex = 0;
-    let activeLoads = 0;
-    const concurrency = isMobile || isSlowConnection ? 1 : 2;
-
-    const loadNext = () => {
-      if (cancelled || nextIndex >= WORK_IMAGES.length) return;
-
-      const image = new Image();
-      const finish = () => {
-        activeLoads -= 1;
-        loadNext();
-      };
-
-      image.decoding = "async";
-      image.onload = finish;
-      image.onerror = finish;
-      image.src = WORK_IMAGES[nextIndex];
-      nextIndex += 1;
-      activeLoads += 1;
-
-      if (activeLoads < concurrency) loadNext();
-    };
-
-    const startDelay = isMobile || isSlowConnection ? 3000 : 1200;
-    const timeoutId = window.setTimeout(() => {
-      for (let i = 0; i < concurrency; i += 1) loadNext();
-    }, startDelay);
-
-    return () => {
-      cancelled = true;
-      window.clearTimeout(timeoutId);
-    };
-  }, []);
 
   return (
     <section
@@ -257,8 +201,8 @@ export default function Work() {
 
       {/* Soft brand glow */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-[-10%] top-[30%] h-[55vmin] w-[55vmin] rounded-full bg-blue-light/5 blur-[140px]" />
-        <div className="absolute bottom-[-5%] right-[-10%] h-[50vmin] w-[50vmin] rounded-full bg-green/5 blur-[140px]" />
+        <div className="absolute left-[-10%] top-[30%] h-[55vmin] w-[55vmin] glow-blue" />
+        <div className="absolute bottom-[-5%] right-[-10%] h-[50vmin] w-[50vmin] glow-green" />
       </div>
 
       <div className="mx-auto w-full max-w-350 px-5 sm:px-8 lg:px-12">
@@ -334,6 +278,7 @@ export default function Work() {
             title={active.title}
             subtitle={active.subtitle}
             images={active.images}
+            thumbs={active.thumbs}
             folderHint={active.folder}
             onClose={() => setActiveId(null)}
           />

@@ -12,6 +12,8 @@ type Props = {
   title: string;
   subtitle: string;
   images: string[];
+  /** Small versions for the thumbnail strip (same order as `images`). */
+  thumbs?: string[];
   folderHint: string;
   onClose: () => void;
 };
@@ -19,7 +21,7 @@ type Props = {
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 const pad = (n: number) => String(n).padStart(2, "0");
 
-export default function WorkLightbox({ title, subtitle, images, folderHint, onClose }: Props) {
+export default function WorkLightbox({ title, subtitle, images, thumbs, folderHint, onClose }: Props) {
   const [swiper, setSwiper] = useState<SwiperCore | null>(null);
   const [index, setIndex] = useState(0);
   const [atStart, setAtStart] = useState(true);
@@ -68,7 +70,7 @@ export default function WorkLightbox({ title, subtitle, images, folderHint, onCl
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.35, ease }}
-      className="fixed inset-0 z-100 flex flex-col bg-black/95 backdrop-blur-md"
+      className="fixed inset-0 z-100 flex flex-col bg-black"
     >
       {/* Top bar */}
       <div className="flex h-16 shrink-0 items-center justify-between gap-4 px-5 sm:h-20 sm:px-8">
@@ -137,13 +139,17 @@ export default function WorkLightbox({ title, subtitle, images, folderHint, onCl
                       if (e.target === e.currentTarget) onClose();
                     }}
                   >
-                    <img
-                      src={src}
-                      alt={`${title} ${i + 1}`}
-                      draggable={false}
-                      loading={i < 2 ? "eager" : "lazy"}
-                      className="select-none rounded-md object-contain shadow-2xl shadow-black/60"
-                    />
+                    {/* Only the current slide and its neighbours get a real <img>.
+                        Mounting all of them made iPhones decode every full-size image. */}
+                    {Math.abs(i - index) <= 1 && (
+                      <img
+                        src={src}
+                        alt={`${title} ${i + 1}`}
+                        draggable={false}
+                        decoding="async"
+                        className="select-none rounded-md object-contain shadow-2xl shadow-black/60"
+                      />
+                    )}
                   </div>
                 </SwiperSlide>
               ))}
@@ -157,7 +163,7 @@ export default function WorkLightbox({ title, subtitle, images, folderHint, onCl
                   onClick={() => swiper?.slidePrev()}
                   disabled={atStart}
                   aria-label="Previous image"
-                  className="absolute left-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-white/15 bg-black/50 text-white backdrop-blur-md transition-all duration-300 hover:border-green hover:bg-green hover:text-black disabled:pointer-events-none disabled:opacity-25 sm:grid lg:left-6 lg:h-14 lg:w-14"
+                  className="absolute left-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-white/15 bg-black/70 text-white transition-all duration-300 hover:border-green hover:bg-green hover:text-black disabled:pointer-events-none disabled:opacity-25 sm:grid lg:left-6 lg:h-14 lg:w-14"
                 >
                   <ArrowLeft className="h-5 w-5" strokeWidth={1.8} />
                 </button>
@@ -166,7 +172,7 @@ export default function WorkLightbox({ title, subtitle, images, folderHint, onCl
                   onClick={() => swiper?.slideNext()}
                   disabled={atEnd}
                   aria-label="Next image"
-                  className="absolute right-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-white/15 bg-black/50 text-white backdrop-blur-md transition-all duration-300 hover:border-green hover:bg-green hover:text-black disabled:pointer-events-none disabled:opacity-25 sm:grid lg:right-6 lg:h-14 lg:w-14"
+                  className="absolute right-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 place-items-center rounded-full border border-white/15 bg-black/70 text-white transition-all duration-300 hover:border-green hover:bg-green hover:text-black disabled:pointer-events-none disabled:opacity-25 sm:grid lg:right-6 lg:h-14 lg:w-14"
                 >
                   <ArrowRight className="h-5 w-5" strokeWidth={1.8} />
                 </button>
@@ -211,9 +217,10 @@ export default function WorkLightbox({ title, subtitle, images, folderHint, onCl
               }`}
             >
               <img
-                src={src}
+                src={thumbs?.[i] ?? src}
                 alt=""
                 loading="lazy"
+                decoding="async"
                 draggable={false}
                 className="h-full w-full object-cover"
               />

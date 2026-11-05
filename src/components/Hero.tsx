@@ -91,8 +91,8 @@ export default function Hero() {
 
       {/* Very soft brand glow — base stays pure black. Delete this block for 100% flat black. */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute bottom-[-30%] left-[5%] h-[60vmin] w-[70vmin] rounded-full bg-green/6 blur-[130px]" />
-        <div className="absolute bottom-[-35%] right-[0%] h-[55vmin] w-[70vmin] rounded-full bg-blue-light/6 blur-[130px]" />
+        <div className="absolute bottom-[-30%] left-[5%] h-[60vmin] w-[70vmin] glow-green" />
+        <div className="absolute bottom-[-35%] right-[0%] h-[55vmin] w-[70vmin] glow-blue" />
       </div>
 
       <div className="mx-auto flex w-full max-w-350 flex-none flex-col justify-start gap-8 px-5 pb-4 pt-24 sm:px-8 sm:pb-10 sm:pt-28 lg:flex-1 lg:justify-between lg:gap-12 lg:px-12">

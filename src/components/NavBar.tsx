@@ -151,7 +151,7 @@ export default function Navbar() {
   const headerState = open
     ? "border-transparent bg-black"
     : scrolled
-      ? "border-white/10 bg-black/70 backdrop-blur-xl"
+      ? "border-white/10 bg-black/90 md:bg-black/70 md:backdrop-blur-xl"
       : "border-transparent bg-transparent";
 
   return (
@@ -161,7 +161,7 @@ export default function Navbar() {
         initial={{ y: "-100%", opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease }}
-        className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-300 ${headerState}`}
+        className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color] duration-300 ${headerState}`}
       >
         <div className="mx-auto flex h-16 w-full max-w-350 items-center justify-between px-5 sm:px-8 md:h-20 lg:px-12">
           {/* Logo image (imported from src/assets/images) */}

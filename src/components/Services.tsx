@@ -131,8 +131,8 @@ export default function Services() {
 
       {/* Soft brand glow */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute right-[-10%] top-[5%] h-[55vmin] w-[55vmin] rounded-full bg-blue-light/5 blur-[140px]" />
-        <div className="absolute bottom-[-10%] left-[10%] h-[50vmin] w-[50vmin] rounded-full bg-green/5 blur-[140px]" />
+        <div className="absolute right-[-10%] top-[5%] h-[55vmin] w-[55vmin] glow-blue" />
+        <div className="absolute bottom-[-10%] left-[10%] h-[50vmin] w-[50vmin] glow-green" />    
       </div>
 
       <div className="mx-auto w-full max-w-350 px-5 sm:px-8 lg:px-12">
@@ -238,7 +238,7 @@ export default function Services() {
                     {/* Hover glow */}
                     <div
                       aria-hidden
-                      className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-green/0 blur-3xl transition-colors duration-700 group-hover:bg-green/20"
+                      className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 glow-green-strong opacity-0 transition-opacity duration-700 group-hover:opacity-100"
                     />
 
                     {/* Top row: icon + number */}
