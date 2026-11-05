@@ -68,7 +68,7 @@ function ArrowUpRight({ className }: { className?: string }) {
 
 export default function Hero() {
   return (
-    <section id="home" className="relative isolate flex min-h-svh flex-col overflow-hidden bg-black">
+    <section id="home" className="relative isolate flex min-h-0 flex-col overflow-hidden bg-black lg:min-h-svh">
       {/* Faint vertical guide lines */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="mx-auto h-full w-full max-w-350 px-5 sm:px-8 lg:px-12">
@@ -95,7 +95,7 @@ export default function Hero() {
         <div className="absolute bottom-[-35%] right-[0%] h-[55vmin] w-[70vmin] rounded-full bg-blue-light/6 blur-[130px]" />
       </div>
 
-      <div className="mx-auto flex w-full max-w-350 flex-1 flex-col justify-start gap-8 px-5 pb-10 pt-24 sm:px-8 sm:pt-28 lg:justify-between lg:gap-12 lg:px-12">
+      <div className="mx-auto flex w-full max-w-350 flex-none flex-col justify-start gap-8 px-5 pb-4 pt-24 sm:px-8 sm:pb-10 sm:pt-28 lg:flex-1 lg:justify-between lg:gap-12 lg:px-12">
         {/* Top tags */}
         <motion.div
           variants={fadeUp}
