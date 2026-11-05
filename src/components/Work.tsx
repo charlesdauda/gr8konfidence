@@ -8,11 +8,13 @@ import WorkLightbox from "./WorkLightbox"
 import logo1 from "../assets/images/logo1.png";
 import logo2 from "../assets/images/logo2.png";
 import logo3 from "../assets/images/logo3.png";
+
 import flyer1 from "../assets/images/flyer1.png";
 import flyer2 from "../assets/images/flyer2.png";
 import flyer3 from "../assets/images/flyer3.png";
 import flyer4 from "../assets/images/flyer4.png";
 import flyer5 from "../assets/images/flyer5.png";
+
 import streamer1 from "../assets/images/streamer1.png";
 import streamer2 from "../assets/images/streamer2.png";
 import streamer3 from "../assets/images/streamer3.png";
@@ -25,10 +27,12 @@ import streamer9 from "../assets/images/streamer9.png";
 import streamer10 from "../assets/images/streamer10.png";
 import streamer11 from "../assets/images/streamer11.png";
 import streamer12 from "../assets/images/streamer12.png";
+
 import poster1 from "../assets/images/poster1.png";
 import poster2 from "../assets/images/poster2.png";
 import poster3 from "../assets/images/poster3.png";
 import poster4 from "../assets/images/poster4.png";
+import poster5 from "../assets/images/poster5.png";
 
 const LABEL = "Selected work";
 const HEADLINE_ONE = "Designs that";
@@ -52,7 +56,7 @@ const STREAMERS = [
   streamer11,
   streamer12,
 ];
-const POSTERS = [poster1, poster2, poster3, poster4];
+const POSTERS = [poster1, poster2, poster3, poster4, poster5];
 const WORK_IMAGES = [...LOGOS, ...FLYERS, ...STREAMERS, ...POSTERS];
 
 type Category = {
@@ -147,7 +151,7 @@ function WorkCard({ category, onOpen }: { category: Category; onOpen: () => void
           <img
             src={cover}
             alt=""
-            loading="eager"
+            loading={id === "logos" ? "eager" : "lazy"}
             decoding="async"
             draggable={false}
             className="absolute inset-0 -z-10 h-full w-full object-cover transition-transform duration-1200 ease-out group-hover:scale-105"
@@ -189,9 +193,24 @@ export default function Work() {
   const active = CATEGORIES.find((c) => c.id === activeId) ?? null;
 
   useEffect(() => {
+    const connection = (
+      navigator as Navigator & {
+        connection?: {
+          saveData?: boolean;
+          effectiveType?: string;
+        };
+      }
+    ).connection;
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    const isSlowConnection =
+      connection?.saveData ||
+      connection?.effectiveType === "slow-2g" ||
+      connection?.effectiveType === "2g";
+
     let cancelled = false;
     let nextIndex = 0;
     let activeLoads = 0;
+    const concurrency = isMobile || isSlowConnection ? 1 : 2;
 
     const loadNext = () => {
       if (cancelled || nextIndex >= WORK_IMAGES.length) return;
@@ -209,30 +228,17 @@ export default function Work() {
       nextIndex += 1;
       activeLoads += 1;
 
-      if (activeLoads < 2) loadNext();
+      if (activeLoads < concurrency) loadNext();
     };
 
-    const startPrefetch = () => {
-      loadNext();
-      loadNext();
-    };
-
-    const idleWindow = window as Window & {
-      requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
-      cancelIdleCallback?: (id: number) => void;
-    };
-    const usesIdleCallback = Boolean(idleWindow.requestIdleCallback);
-    const idleId = usesIdleCallback
-      ? idleWindow.requestIdleCallback(startPrefetch, { timeout: 2000 })
-      : window.setTimeout(startPrefetch, 300);
+    const startDelay = isMobile || isSlowConnection ? 3000 : 1200;
+    const timeoutId = window.setTimeout(() => {
+      for (let i = 0; i < concurrency; i += 1) loadNext();
+    }, startDelay);
 
     return () => {
       cancelled = true;
-      if (usesIdleCallback && idleWindow.cancelIdleCallback) {
-        idleWindow.cancelIdleCallback(idleId);
-      } else {
-        window.clearTimeout(idleId);
-      }
+      window.clearTimeout(timeoutId);
     };
   }, []);
 
