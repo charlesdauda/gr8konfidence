@@ -1,12 +1,3 @@
-// Run once (and again whenever you add images):  node scripts/optimize-images.mjs
-// Needs:  npm i -D sharp
-//
-// For every PNG/JPG in src/assets/images it writes:
-//   name.webp          full size for the lightbox   (max 1600px wide)
-//   covers/name.webp   medium version for the category cards (max 900px wide)
-//   thumbs/name.webp   tiny version for the lightbox strip (max 240px wide)
-// about.png also gets about.webp (max 1200px wide).
-// The original files are never touched or deleted.
 import { readdir, mkdir, stat } from "node:fs/promises";
 import path from "node:path";
 import sharp from "sharp";

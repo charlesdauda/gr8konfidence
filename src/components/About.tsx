@@ -24,9 +24,9 @@ const PARAGRAPHS = [
 
 const STATS = [
   { value: 10, suffix: "+", label: "Years of experience" },
-  { value: 120, suffix: "+", label: "Projects delivered" },
-  { value: 40, suffix: "+", label: "Brands elevated" },
-  { value: 20, suffix: "+", label: "Recommendations" },
+  { value: 1200, suffix: "+", label: "Projects delivered" },
+  { value: 300, suffix: "+", label: "Brands elevated" },
+  { value: 900, suffix: "+", label: "Recommendations" },
 ];
 
 const DISCIPLINES = [
@@ -34,7 +34,7 @@ const DISCIPLINES = [
   "Brand Identity",
   "Campaigns",
   "Graphic Design",
-  "Motion",
+  "Motion Graphics",
   "Web Design",
   "Logo Creation",
   "AI Movie Creation",
