@@ -96,22 +96,18 @@ export default function About() {
       id="about"
       className="relative isolate overflow-hidden bg-black py-20 sm:py-28 lg:py-36"
     >
-      {/* Oversized outlined word in the background */}
       <div
         aria-hidden
         className="pointer-events-none absolute right-[-4%] top-8 -z-10 select-none font-gothic text-[clamp(8rem,28vw,26rem)] uppercase leading-none text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.06)]"
       >
         About
       </div>
-
-      {/* Soft brand glow */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-[-10%] top-[20%] h-[55vmin] w-[55vmin] glow-green" />
         <div className="absolute bottom-[0%] right-[-10%] h-[50vmin] w-[50vmin] glow-blue" />
       </div>
 
       <div className="mx-auto grid w-full max-w-350 items-start gap-14 px-5 sm:px-8 lg:grid-cols-12 lg:gap-16 lg:px-12">
-        {/* ───────── Left: photo ───────── */}
         <motion.div
           ref={photoRef}
           initial={{ opacity: 0, y: 40 }}
@@ -120,7 +116,6 @@ export default function About() {
           transition={{ duration: 1.1, ease }}
           className="relative mx-auto w-full max-w-md lg:sticky lg:top-28 lg:col-span-5 lg:max-w-none"
         >
-          {/* Offset outline frame */}
           <div
             aria-hidden
             className="absolute -bottom-4 -right-4 h-full w-full rounded-sm border border-green/40 sm:-bottom-5 sm:-right-5"
@@ -135,12 +130,10 @@ export default function About() {
               style={{ y: imageY }}
               className="absolute inset-0 h-[112%] w-full object-cover object-top hover-color"
             />
-            {/* Bottom fade for legibility */}
             <div
               aria-hidden
               className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-linear-to-t from-black/70 to-transparent"
             />
-            {/* Corner brackets */}
             {[
               "left-3 top-3 border-l border-t",
               "right-3 top-3 border-r border-t",
@@ -154,7 +147,6 @@ export default function About() {
               />
             ))}
 
-            {/* Name tag */}
             <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-4">
               <div>
                 <p className="font-anton text-2xl uppercase leading-none tracking-wide text-white sm:text-3xl">
@@ -170,8 +162,6 @@ export default function About() {
             </div>
           </div>
         </motion.div>
-
-        {/* ───────── Right: content ───────── */}
         <motion.div
           variants={container}
           initial="hidden"
@@ -242,8 +232,7 @@ export default function About() {
               </div>
             ))}
           </motion.dl>
-
-          {/* Disciplines */}
+          
           <motion.div variants={fadeUp} className="mt-10">
             <p className="font-oswald text-xs uppercase tracking-[0.2em] text-white/50">
               What I do

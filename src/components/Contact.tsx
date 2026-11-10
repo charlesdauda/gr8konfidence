@@ -1,6 +1,5 @@
 import { useState, type FormEvent, type ReactNode } from "react";
 import { motion, type Variants } from "framer-motion";
-import emailjs from "@emailjs/browser";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 import type { IconType } from "react-icons";
 import {
@@ -22,14 +21,6 @@ const NAME = "gr8.konfidence";
 const EMAIL = "emmanuelobiri104@gmail.com";
 const LOCATION = "Accra, Ghana";
 const RESPONSE_TIME = "Within 24 hours";
-
-// EmailJS (https://www.emailjs.com) — free plan is plenty for a portfolio.
-// Fill these three in and the form sends real emails straight to your inbox.
-// Until you do, the form falls back to opening the visitor's email app,
-// pre-filled and addressed to EMAIL above, so it works from day one.
-const EMAILJS_SERVICE_ID = "YOUR_SERVICE_ID";
-const EMAILJS_TEMPLATE_ID = "YOUR_TEMPLATE_ID";
-const EMAILJS_PUBLIC_KEY = "YOUR_PUBLIC_KEY";
 
 type Social = { name: string; href: string; icon: IconType };
 
@@ -115,19 +106,13 @@ function Field({
   );
 }
 
-type Status = "idle" | "sending" | "sent" | "opened" | "error";
+type Status = "idle" | "opened";
 
 export default function Contact() {
   const [status, setStatus] = useState<Status>("idle");
 
-  const emailJsReady =
-    !EMAILJS_SERVICE_ID.startsWith("YOUR_") &&
-    !EMAILJS_TEMPLATE_ID.startsWith("YOUR_") &&
-    !EMAILJS_PUBLIC_KEY.startsWith("YOUR_");
-
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (status === "sending") return;
 
     const form = e.currentTarget;
     const data = new FormData(form);
@@ -143,34 +128,30 @@ export default function Contact() {
       message: String(data.get("message") ?? "").trim(),
     };
 
-    // Not configured yet → open the visitor's email app, pre-filled.
-    if (!emailJsReady) {
-      const subject = `New project enquiry — ${values.project_type}`;
-      const body = [
-        `Name: ${values.from_name}`,
-        `Email: ${values.from_email}`,
-        `Project type: ${values.project_type}`,
-        `Budget: ${values.budget}`,
-        "",
-        values.message,
-      ].join("\n");
-      window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(
-        subject,
-      )}&body=${encodeURIComponent(body)}`;
-      setStatus("opened");
-      return;
-    }
+    const subject = `New project enquiry — ${values.project_type}`;
+    const body = [
+      "NEW PROJECT ENQUIRY",
+      "===================",
+      "",
+      `Name: ${values.from_name}`,
+      `Email: ${values.from_email}`,
+      "",
+      "PROJECT DETAILS",
+      "---------------",
+      `Project type: ${values.project_type}`,
+      `Budget: ${values.budget}`,
+      "",
+      "PROJECT BRIEF",
+      "-------------",
+      values.message,
+      "",
+      "Sent from the gr8.konfidence contact form.",
+    ].join("\n");
 
-    setStatus("sending");
-    try {
-      await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, values, {
-        publicKey: EMAILJS_PUBLIC_KEY,
-      });
-      setStatus("sent");
-      form.reset();
-    } catch {
-      setStatus("error");
-    }
+    window.location.href = `mailto:${EMAIL}?subject=${encodeURIComponent(
+      subject,
+    )}&body=${encodeURIComponent(body)}`;
+    setStatus("opened");
   }
 
   const year = new Date().getFullYear();
@@ -412,37 +393,26 @@ export default function Contact() {
             <div className="mt-10 flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
               <button
                 type="submit"
-                disabled={status === "sending"}
                 className="group flex w-fit items-center gap-2 disabled:cursor-not-allowed disabled:opacity-70"
               >
                 <span className="inline-flex h-12 items-center rounded-md bg-white px-6 font-oswald text-sm font-medium uppercase tracking-wider text-black transition-colors duration-300 group-hover:bg-green-light group-disabled:group-hover:bg-white">
-                  {status === "sending" ? "Sending..." : "Send message"}
+                  Send message
                 </span>
                 <span className="grid h-12 w-12 place-items-center rounded-md bg-green text-black transition-colors duration-300 group-hover:bg-blue-light group-disabled:group-hover:bg-green">
-                  {status === "sending" ? (
-                    <span className="h-5 w-5 animate-spin rounded-full border-2 border-black/30 border-t-black" />
-                  ) : (
-                    <ArrowUpRight
-                      className="h-5 w-5 transition-transform duration-500 ease-out group-hover:rotate-45"
-                      strokeWidth={2}
-                    />
-                  )}
+                  <ArrowUpRight
+                    className="h-5 w-5 transition-transform duration-500 ease-out group-hover:rotate-45"
+                    strokeWidth={2}
+                  />
                 </span>
               </button>
 
               <p
                 role="status"
                 aria-live="polite"
-                className={`text-sm leading-relaxed ${
-                  status === "error" ? "text-red-400" : "text-green-light"
-                }`}
-              >
-                {status === "sent" &&
-                  "Thank you! Your message is on its way — I'll reply soon."}
+                  className="text-sm leading-relaxed text-green-light"
+                >
                 {status === "opened" &&
                   "Your email app should now be open with your message ready to send."}
-                {status === "error" &&
-                  `Something went wrong. Please try again or email ${EMAIL} directly.`}
               </p>
             </div>
           </form>

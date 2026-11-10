@@ -7,8 +7,6 @@ import "swiper/css";
 import { Star } from "lucide-react";
 import { FaQuoteRight } from "react-icons/fa6";
 
-/* ───────────── EDIT THESE ───────────── */
-
 const LABEL = "Testimonials";
 const HEADLINE_ONE = "Kind words from";
 const HEADLINE_TWO = "people I've worked with.";
@@ -21,11 +19,10 @@ const MAX_RATING = 5;
 type Testimonial = {
   quote: string;
   name: string;
-  role: string; // job title, company
-  rating?: number; // 1–5 (defaults to 5)
+  role: string;
+  rating?: number;
 };
 
-// These are placeholders — replace them with real client feedback.
 const TESTIMONIALS: Testimonial[] = [
   {
     quote:
@@ -100,15 +97,12 @@ const getRating = (rating?: number) => {
   return Math.min(MAX_RATING, Math.max(0, Math.round(normalizedRating)));
 };
 
-/* ───────────── Section ───────────── */
-
 export default function Testimonials() {
   const sectionRef = useRef<HTMLElement>(null);
   const [swiper, setSwiper] = useState<SwiperCore | null>(null);
 
   const inView = useInView(sectionRef, { amount: 0.25 });
 
-  // Respect the visitor's "reduce motion" setting: no auto-swiping for them.
   const [reduceMotion, setReduceMotion] = useState(
     () =>
       typeof window !== "undefined" &&
@@ -124,7 +118,6 @@ export default function Testimonials() {
     return () => mediaQuery.removeEventListener("change", updateReduceMotion);
   }, []);
 
-  // Only auto-swipe while the section is actually on screen.
   useEffect(() => {
     if (!swiper || swiper.destroyed || !swiper.autoplay || reduceMotion) return;
     if (inView) swiper.autoplay.start();

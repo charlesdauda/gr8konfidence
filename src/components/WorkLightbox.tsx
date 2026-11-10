@@ -12,7 +12,6 @@ type Props = {
   title: string;
   subtitle: string;
   images: string[];
-  /** Small versions for the thumbnail strip (same order as `images`). */
   thumbs?: string[];
   folderHint: string;
   onClose: () => void;
@@ -31,7 +30,6 @@ export default function WorkLightbox({ title, subtitle, images, thumbs, folderHi
   const stripRef = useRef<HTMLDivElement>(null);
   const thumbRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
-  // Lock page scroll while open, and put focus on the close button.
   useEffect(() => {
     const prev = document.documentElement.style.overflow;
     document.documentElement.style.overflow = "hidden";
@@ -41,14 +39,13 @@ export default function WorkLightbox({ title, subtitle, images, thumbs, folderHi
     };
   }, []);
 
-  // Escape closes.
+
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose();
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [onClose]);
 
-  // Keep the active thumbnail centred in the strip.
   useEffect(() => {
     const strip = stripRef.current;
     const thumb = thumbRefs.current[index];

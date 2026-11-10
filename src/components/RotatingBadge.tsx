@@ -20,7 +20,6 @@ export default function RotatingBadge({
       aria-label="Scroll down"
       className="group relative grid h-28 w-28 shrink-0 place-items-center rounded-full lg:h-32 lg:w-32"
     >
-      {/* Rotating circular text */}
       <svg
         viewBox="0 0 120 120"
         aria-hidden
@@ -40,7 +39,6 @@ export default function RotatingBadge({
         </text>
       </svg>
 
-      {/* Center arrow */}
       <svg
         viewBox="0 0 24 24"
         aria-hidden

@@ -6,8 +6,6 @@ import {
 } from "framer-motion";
 import WorkLightbox from "./WorkLightbox"
 
-/* Images: run `node scripts/optimize-images.mjs` once. It creates small .webp
-   copies of your PNGs, and these globs pick them up automatically. */
 const asUrls = (m: Record<string, unknown>) => m as Record<string, string>;
 const FULL = asUrls(
   import.meta.glob("../assets/images/*.webp", { eager: true, query: "?url", import: "default" }),
@@ -19,7 +17,6 @@ const THUMBS = asUrls(
   import.meta.glob("../assets/images/thumbs/*.webp", { eager: true, query: "?url", import: "default" }),
 );
 
-/** Collects files named like logo1, logo2 ... in number order. */
 const pick = (map: Record<string, string>, prefix: string) =>
   Object.entries(map)
     .map(([path, url]) => {
@@ -55,8 +52,8 @@ type Category = {
   images: string[];
   thumbs: string[];
   cover?: string;
-  span: string; // grid width on tablet/desktop
-  glow: string; // placeholder tint
+  span: string; 
+  glow: string; 
 };
 
 const CATEGORIES: Category[] = [
@@ -106,8 +103,6 @@ const CATEGORIES: Category[] = [
   },
 ];
 
-/* ───────────── Motion ───────────── */
-
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 const container: Variants = {
@@ -125,8 +120,6 @@ const lineReveal: Variants = {
   show: { y: 0, transition: { duration: 1, ease } },
 };
 
-/* ───────────── Card ───────────── */
-
 function WorkCard({ category, onOpen }: { category: Category; onOpen: () => void }) {
   const { id, title, subtitle, cover, span, glow } = category;
   const isPortraitPreview = id === "streamers" || id === "posters";
@@ -143,7 +136,6 @@ function WorkCard({ category, onOpen }: { category: Category; onOpen: () => void
             : "h-72 sm:h-80 lg:h-96"
         }`}
       >
-        {/* Cover image or placeholder */}
         {cover ? (
           <img
             src={cover}
@@ -162,7 +154,6 @@ function WorkCard({ category, onOpen }: { category: Category; onOpen: () => void
           </div>
         )}
 
-        {/* Readability filter */}
         <div
           aria-hidden
           className="absolute inset-0 -z-10 bg-linear-to-b from-black/50 via-black/10 to-black/45 transition-colors duration-700 group-hover:from-black/35 group-hover:to-black/25"
@@ -180,8 +171,6 @@ function WorkCard({ category, onOpen }: { category: Category; onOpen: () => void
   );
 }
 
-/* ───────────── Section ───────────── */
-
 export default function Work() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const active = CATEGORIES.find((c) => c.id === activeId) ?? null;
@@ -191,15 +180,12 @@ export default function Work() {
       id="work"
       className="relative isolate overflow-hidden bg-black py-20 sm:py-28 lg:py-36"
     >
-      {/* Oversized outlined word */}
       <div
         aria-hidden
         className="pointer-events-none absolute right-[-3%] top-6 -z-10 select-none font-gothic text-[clamp(8rem,28vw,26rem)] uppercase leading-none text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.05)]"
       >
         Work
       </div>
-
-      {/* Soft brand glow */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute left-[-10%] top-[30%] h-[55vmin] w-[55vmin] glow-blue" />
         <div className="absolute bottom-[-5%] right-[-10%] h-[50vmin] w-[50vmin] glow-green" />
@@ -252,7 +238,6 @@ export default function Work() {
           </motion.p>
         </motion.div>
 
-        {/* Category grid */}
         <motion.div
           variants={container}
           initial="hidden"
@@ -270,7 +255,6 @@ export default function Work() {
         </motion.div>
       </div>
 
-      {/* Lightbox */}
       <AnimatePresence>
         {active && (
           <WorkLightbox

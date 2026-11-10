@@ -29,14 +29,13 @@ export default function Navbar() {
 
   const getHeaderHeight = () => headerRef.current?.offsetHeight ?? 80;
 
-  // ── Scroll-spy: highlight the link of the section currently in view ──
   useEffect(() => {
     let frame = 0;
 
     const update = () => {
       frame = 0;
       setScrolled(window.scrollY > 24);
-      if (autoScrolling.current) return; // don't flicker while a click-scroll runs
+      if (autoScrolling.current) return; 
 
       const line = getHeaderHeight() + window.innerHeight * 0.25;
       let current = SECTION_IDS[0];
@@ -44,12 +43,10 @@ export default function Navbar() {
 
       for (const id of SECTION_IDS) {
         const el = document.getElementById(id);
-        if (!el) continue; // section not built yet — skip it
+        if (!el) continue;
         lastFound = id;
         if (el.getBoundingClientRect().top <= line) current = id;
       }
-
-      // At the very bottom of the page, the last section wins.
       const atBottom =
         window.scrollY > 0 &&
         window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
@@ -72,7 +69,6 @@ export default function Navbar() {
     };
   }, []);
 
-  // ── If the visitor scrolls manually mid-animation, hand control back ──
   useEffect(() => {
     const interrupt = () => {
       if (!autoScrolling.current) return;
@@ -90,7 +86,6 @@ export default function Navbar() {
     };
   }, []);
 
-  // ── Lock page scroll while the mobile menu is open + close on Escape ──
   useEffect(() => {
     document.documentElement.style.overflow = open ? "hidden" : "";
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
@@ -101,7 +96,6 @@ export default function Navbar() {
     };
   }, [open]);
 
-  // ── Close the mobile menu if the viewport grows to desktop size ──
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 768px)");
     const onChange = (e: MediaQueryListEvent) => e.matches && setOpen(false);
@@ -109,7 +103,6 @@ export default function Navbar() {
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
-  // ── Smooth scroll to a section ──
   const goTo = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     const id = href.slice(1);
@@ -163,7 +156,6 @@ export default function Navbar() {
         className={`fixed inset-x-0 top-0 z-50 border-b transition-[background-color,border-color] duration-300 ${headerState}`}
       >
         <div className="mx-auto flex h-16 w-full max-w-350 items-center justify-between px-5 sm:px-8 md:h-20 lg:px-12">
-          {/* Logo image (imported from src/assets/images) */}
           <a
             href="#home"
             aria-label={`${NAME} — back to top`}
@@ -177,8 +169,6 @@ export default function Navbar() {
               className="h-full w-auto max-w-35 object-contain object-left sm:max-w-42.5"
             />
           </a>
-
-          {/* Desktop links */}
           <nav aria-label="Primary" className="hidden md:block">
             <ul className="flex items-center gap-7 lg:gap-10">
               {NAV_LINKS.map((item) => {
@@ -195,12 +185,10 @@ export default function Navbar() {
                     >
                       {item.label}
 
-                      {/* Hover underline (inactive links) */}
                       {!isActive && (
                         <span className="absolute inset-x-0 bottom-0.5 h-px origin-left scale-x-0 bg-white/40 transition-transform duration-500 ease-out group-hover:scale-x-100" />
                       )}
 
-                      {/* Active underline — glides between links */}
                       {isActive && (
                         <motion.span
                           layoutId="nav-active"
@@ -215,7 +203,6 @@ export default function Navbar() {
             </ul>
           </nav>
 
-          {/* Mobile toggle */}
           <button
             type="button"
             aria-label={open ? "Close menu" : "Open menu"}
@@ -250,8 +237,7 @@ export default function Navbar() {
           </button>
         </div>
       </motion.header>
-
-      {/* Mobile full-screen menu */}
+      
       <AnimatePresence>
         {open && (
           <motion.div

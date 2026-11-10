@@ -99,14 +99,12 @@ export default function Services() {
 
   const inView = useInView(sectionRef, { amount: 0.25 });
 
-  // Respect the visitor's "reduce motion" setting: no auto-swiping for them.
   const [reduceMotion] = useState(
     () =>
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
 
-  // Only auto-swipe while the section is actually on screen.
   useEffect(() => {
     if (!swiper || swiper.destroyed || !swiper.autoplay || reduceMotion) return;
     if (inView) swiper.autoplay.start();
@@ -121,7 +119,6 @@ export default function Services() {
       id="services"
       className="relative isolate overflow-hidden bg-black py-20 sm:py-28 lg:py-36"
     >
-      {/* Oversized outlined word in the background */}
       <div
         aria-hidden
         className="pointer-events-none absolute left-[-3%] bottom-4 -z-10 select-none font-gothic text-[clamp(8rem,26vw,24rem)] uppercase leading-none text-transparent [-webkit-text-stroke:1px_rgba(255,255,255,0.05)]"
@@ -129,7 +126,7 @@ export default function Services() {
         Services
       </div>
 
-      {/* Soft brand glow */}
+
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute right-[-10%] top-[5%] h-[55vmin] w-[55vmin] glow-blue" />
         <div className="absolute bottom-[-10%] left-[10%] h-[50vmin] w-[50vmin] glow-green" />    

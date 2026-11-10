@@ -77,11 +77,6 @@ body {
   }
 }
 
-/* ── Glows ──────────────────────────────────────────────────────────────
-   Soft brand glows drawn with radial gradients instead of `filter: blur()`.
-   A 140px blur on a huge element makes iOS Safari allocate a giant GPU
-   layer per glow, which is what blanked the page. Gradients look the same
-   and cost almost nothing. */
 .glow-green,
 .glow-blue,
 .glow-green-strong {

@@ -21,7 +21,6 @@ const TICKER = ["Art Direction", "Branding", "Campaigns", "Motion", "Web Design"
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
-// Headline lines slide up from behind a mask, one after another.
 const lineReveal: Variants = {
   hidden: { y: "115%" },
   show: (i: number) => ({
@@ -89,14 +88,12 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Very soft brand glow — base stays pure black. Delete this block for 100% flat black. */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute bottom-[-30%] left-[5%] h-[60vmin] w-[70vmin] glow-green" />
         <div className="absolute bottom-[-35%] right-[0%] h-[55vmin] w-[70vmin] glow-blue" />
       </div>
 
       <div className="mx-auto flex w-full max-w-350 flex-none flex-col justify-start gap-8 px-5 pb-4 pt-24 sm:px-8 sm:pb-10 sm:pt-28 lg:flex-1 lg:justify-between lg:gap-12 lg:px-12">
-        {/* Top tags */}
         <motion.div
           variants={fadeUp}
           custom={0.9}
@@ -108,8 +105,6 @@ export default function Hero() {
           <span className="hidden text-white/55 md:block">{TAG_CENTER}</span>
           <Bracketed>{TAG_RIGHT}</Bracketed>
         </motion.div>
-
-        {/* Headline + supporting content */}
         <div className="grid items-end gap-10 lg:grid-cols-12 lg:gap-8">
           <h1 className="lg:col-span-8">
             <span className="block overflow-hidden pb-[0.04em]">
@@ -187,7 +182,6 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Services ticker */}
       <motion.div
         aria-hidden
         initial={{ opacity: 0 }}
